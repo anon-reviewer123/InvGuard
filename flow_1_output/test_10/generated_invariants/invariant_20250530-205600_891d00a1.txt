@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 20:56:00
+
+Contract Code Snippet:
+function chooseWinner() private { ... }
+
+Generated Invariant:
+raffleId > 0 ==> raffleId <= totalTickets

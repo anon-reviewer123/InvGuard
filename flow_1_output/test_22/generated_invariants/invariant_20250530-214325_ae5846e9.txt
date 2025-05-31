@@ -1,0 +1,10 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 21:43:25
+
+Contract Code Snippet:
+uint n = players[0].number+players[1].number; if (n%2==0) {
+
+Generated Invariant:
+players[tot].number 
+ 
+players[0].number + players[1].number == 0 mod 2

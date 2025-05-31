@@ -1,0 +1,8 @@
+Invariant Type: state_consistency
+Generated At: 2025-05-30 21:43:25
+
+Contract Code Snippet:
+function play(uint number) payable{ tot++; if (tot==2)
+
+Generated Invariant:
+tot <= 2

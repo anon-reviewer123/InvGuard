@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:38:30
+
+Contract Code Snippet:
+require(value <= _allowed[from][msg.sender]);
+
+Generated Invariant:
+_allowed[from][msg.sender] >= value

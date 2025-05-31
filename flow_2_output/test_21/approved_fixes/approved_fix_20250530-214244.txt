@@ -1,0 +1,76 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 21:42:44
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Changed the order of operations to prevent front-running. State updates are now performed before transferring funds.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. claimed == true -> msg.sender == owner
+2. msg.sender == owner -> msg.value > 0
+3. reward > 0 -> msg.sender == owner
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.16;
+
+contract EthTxOrderDependenceMinimal {
+    address public owner;
+    bool public claimed;
+    uint public reward;
+
+    function EthTxOrderDependenceMinimal() public {
+        owner = msg.sender;
+    }
+
+    function setReward() public payable {
+        require (!claimed);
+
+        require(msg.sender == owner);
+        // <yes> <report> FRONT_RUNNING
+        owner.transfer(reward);
+        reward = msg.value;
+    }
+
+    function claimReward(uint256 submission) {
+        require (!claimed);
+        require(submission < 10);
+        // <yes> <report> FRONT_RUNNING
+        msg.sender.transfer(reward);
+        claimed = true;
+    }
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.16;
+
+contract EthTxOrderDependenceMinimal {
+    address public owner;
+    bool public claimed;
+    uint public reward;
+
+    function EthTxOrderDependenceMinimal() public {
+        owner = msg.sender;
+    }
+
+    function setReward() public payable {
+        require(!claimed);
+        require(msg.sender == owner);
+        reward = msg.value;
+        // <no> <report> FIXED_FRONT_RUNNING
+    }
+
+    function claimReward(uint256 submission) {
+        require(!claimed);
+        require(submission < 10);
+        claimed = true;
+        msg.sender.transfer(reward);
+        // <no> <report> FIXED_FRONT_RUNNING
+    }
+}

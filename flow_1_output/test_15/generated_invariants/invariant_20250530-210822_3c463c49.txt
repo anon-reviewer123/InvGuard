@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 21:08:22
+
+Contract Code Snippet:
+function emptyCreditors() public { if(creditorAddresses.length>1500) { creditorAddresses = new address[](0); win = true; }}}
+
+Generated Invariant:
+win == true if creditorAddresses.length > 1500

@@ -1,0 +1,15 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:53:58
+
+Contract Code Snippet:
+function SetMinSum(uint _val)
+public
+{
+if(intitalized)revert();
+MinSum = _val;
+}
+
+
+Generated Invariant:
+intitalized == true -> SetMinSum(uint _val) and SetLogFile(address _log) revert()
+

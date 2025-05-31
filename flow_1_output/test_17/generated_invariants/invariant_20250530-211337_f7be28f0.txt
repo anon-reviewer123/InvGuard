@@ -1,0 +1,8 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 21:13:37
+
+Contract Code Snippet:
+// A minimum amount of 1 ether is required for a new creditor to lend money.
+
+Generated Invariant:
+msg.value >= 10 ** 18

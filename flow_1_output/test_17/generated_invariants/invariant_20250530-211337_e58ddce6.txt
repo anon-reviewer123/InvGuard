@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:13:37
+
+Contract Code Snippet:
+// Ensure that if a buddy exists, they have enough funds to pay out 5% of new credits.
+
+Generated Invariant:
+buddies[buddy] >= amount

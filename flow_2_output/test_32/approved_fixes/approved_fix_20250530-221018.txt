@@ -1,0 +1,104 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 22:10:18
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Replaced `sha3(block.timestamp)` with a more secure randomness source using `keccak256(blockhash(block.number - 1), now)`. This mitigates time manipulation attacks.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. **msg.value == TICKET_AMOUNT**: Ensures the correct ticket amount is sent.
+2. **pot += msg.value**: The pot value is updated correctly after each ticket purchase.
+3. **random generation**: Ensures randomness is derived from multiple block properties to avoid manipulation.
+4. **bank.transfer(FEE_AMOUNT)**: Ensures the fee is sent before the pot is reset.
+5. **msg.sender.transfer(pot - FEE_AMOUNT)**: Ensures the winner receives the jackpot correctly.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.15;
+
+/// @title Ethereum Lottery Game.
+
+contract EtherLotto {
+
+    // Amount of ether needed for participating in the lottery.
+    uint constant TICKET_AMOUNT = 10;
+
+    // Fixed amount fee for each lottery game.
+    uint constant FEE_AMOUNT = 1;
+
+    // Address where fee is sent.
+    address public bank;
+
+    // Public jackpot that each participant can win (minus fee).
+    uint public pot;
+
+    // Lottery constructor sets bank account from the smart-contract owner.
+    function EtherLotto() {
+        bank = msg.sender;
+    }
+
+    // Public function for playing lottery. Each time this function
+    // is invoked, the sender has an oportunity for winning pot.
+    function play() payable {
+
+        // Participants must spend some fixed ether before playing lottery.
+        assert(msg.value == TICKET_AMOUNT);
+
+        // Increase pot for each participant.
+        pot += msg.value;
+
+        // Compute some *almost random* value for selecting winner from current transaction.
+        // <yes> <report> TIME_MANIPULATION
+        var random = uint(sha3(block.timestamp)) % 2;
+
+        // Distribution: 50% of participants will be winners.
+        if (random == 0) {
+
+            // Send fee to bank account.
+            bank.transfer(FEE_AMOUNT);
+
+            // Send jackpot to winner.
+            msg.sender.transfer(pot - FEE_AMOUNT);
+
+            // Restart jackpot.
+            pot = 0;
+        }
+    }
+
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.15;
+
+/// @title Ethereum Lottery Game.
+
+contract EtherLotto {
+    uint constant TICKET_AMOUNT = 10;
+    uint constant FEE_AMOUNT = 1;
+    address public bank;
+    uint public pot;
+
+    function EtherLotto() {
+        bank = msg.sender;
+    }
+
+    function play() payable {
+        require(msg.value == TICKET_AMOUNT);
+        pot += msg.value;
+
+        // Replace with a more secure randomness source
+        uint random = uint(keccak256(blockhash(block.number - 1), now))) % 2;
+
+        if (random == 0) {
+            bank.transfer(FEE_AMOUNT);
+            msg.sender.transfer(pot - FEE_AMOUNT);
+            pot = 0;
+        }
+    }
+}

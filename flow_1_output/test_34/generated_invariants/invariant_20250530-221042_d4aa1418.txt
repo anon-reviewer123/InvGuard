@@ -1,0 +1,11 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 22:10:42
+
+Contract Code Snippet:
+pragma solidity ^0.4.0;
+contract lottopollo {
+  address leader;
+  uint    timestamp;
+
+Generated Invariant:
+this.balance >= 0

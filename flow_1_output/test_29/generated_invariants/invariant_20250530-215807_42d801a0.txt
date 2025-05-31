@@ -1,0 +1,8 @@
+Invariant Type: data_integrity
+Generated At: 2025-05-30 21:58:07
+
+Contract Code Snippet:
+function AddMessage(address _adr,uint _val,string _data) public { LastMsg.Sender = _adr; LastMsg.Time = now; LastMsg.Val = _val; LastMsg.Data = _data; History.push(LastMsg); }
+
+Generated Invariant:
+LogFile.History.length >= 0

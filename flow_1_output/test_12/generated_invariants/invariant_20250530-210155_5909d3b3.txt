@@ -1,0 +1,15 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:01:55
+
+Contract Code Snippet:
+// Get all bets that have been made
+    function getBets() {
+        if(msg.sender != organizer) { throw; }
+
+        for (uint i = 0; i < bets.length; i++) {
+            GetBet(bets[i].betAmount, bets[i].blockNumber, bets[i].won);
+        }
+    }
+
+Generated Invariant:
+msg.sender == organizer => bets.length > 0

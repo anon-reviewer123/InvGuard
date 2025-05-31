@@ -1,0 +1,10 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 22:12:16
+
+Contract Code Snippet:
+if(now % 15 == 0) { // winner
+            msg.sender.transfer(this.balance);
+        }
+
+Generated Invariant:
+now % 15 == 0 -> msg.sender.transfer(this.balance)

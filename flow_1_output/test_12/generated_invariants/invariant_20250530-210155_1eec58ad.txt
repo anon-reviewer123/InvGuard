@@ -1,0 +1,13 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 21:01:55
+
+Contract Code Snippet:
+// Make a bet
+    function makeBet() {
+        // Won if block number is even
+        // (note: this is a terrible source of randomness, please don't use this with real money)
+        // <yes> <report> BAD_RANDOMNESS
+        bool won = (block.number % 2) == 0;
+
+Generated Invariant:
+msg.value > 0 => block.number % 2 == 0 || block.number % 2 == 1

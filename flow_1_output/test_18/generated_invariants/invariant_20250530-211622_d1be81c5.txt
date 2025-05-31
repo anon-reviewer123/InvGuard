@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 21:16:22
+
+Contract Code Snippet:
+refunds[refundAddresses[x]]
+
+Generated Invariant:
+refunds[refundAddresses[x]] >= 0

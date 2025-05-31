@@ -1,0 +1,105 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:56:18
+Total Invariants: 7
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.19;
+
+contract ETH_FUND
+{
+    mapping (address => uint) public balances;
+    
+    uint public MinDeposit = 1 ether;
+    
+    Log TransferLog;
+    
+    uint lastBlock;
+    
+    function ETH_FUND(address _log)
+    public 
+    {
+        TransferLog = Log(_log);
+    }
+    
+    function Deposit()
+    public
+    payable
+    {
+        if(msg.value > MinDeposit)
+        {
+            balances[msg.sender]+=msg.value;
+            TransferLog.AddMessage(msg.sender,msg.value,"Deposit");
+            lastBlock = block.number;
+        }
+    }
+    
+    function CashOut(uint _am)
+    public
+    payable
+    {
+        if(_am<=balances[msg.sender]&&block.number>lastBlock)
+        {
+            // <yes> <report> REENTRANCY
+            if(msg.sender.call.value(_am)())
+            {
+                balances[msg.sender]-=_am;
+                TransferLog.AddMessage(msg.sender,_am,"CashOut");
+            }
+        }
+    }
+    
+    function() public payable{}    
+}
+
+contract Log 
+{
+   
+    struct Message
+    {
+        address Sender;
+        string  Data;
+        uint Val;
+        uint  Time;
+    }
+    
+    Message[] public History;
+    
+    Message LastMsg;
+    
+    function AddMessage(address _adr,uint _val,string _data)
+    public
+    {
+        LastMsg.Sender = _adr;
+        LastMsg.Time = now;
+        LastMsg.Val = _val;
+        LastMsg.Data = _data;
+        History.push(LastMsg);
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. msg.value > MinDeposit
+----------------------------------------
+
+2. --> balances[msg.sender] += msg.value
+----------------------------------------
+
+3. _am <= balances[msg.sender]
+----------------------------------------
+
+4. --> block.number > lastBlock
+----------------------------------------
+
+5. balances[msg.sender] >= _am
+----------------------------------------
+
+6. TransferLog.History.length >= 0
+----------------------------------------
+
+7. MinDeposit == 1 ether
+----------------------------------------

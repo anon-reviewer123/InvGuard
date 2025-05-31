@@ -1,0 +1,67 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:03:10
+Total Invariants: 11
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.11;
+
+contract MyToken {
+    mapping (address => uint) balances;
+
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
+    function MyToken() {
+        balances[tx.origin] = 10000;
+    }
+    // <yes> <report> SHORT_ADDRESSES
+    function sendCoin(address to, uint amount) returns(bool sufficient) {
+        if (balances[msg.sender] < amount) return false;
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+        Transfer(msg.sender, to, amount);
+        return true;
+    }
+
+    function getBalance(address addr) constant returns(uint) {
+        return balances[addr];
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. balances[msg.sender] >= amount
+----------------------------------------
+
+2. - Ensures that the sender has sufficient balance for the transfer.
+----------------------------------------
+
+3. 2. balances[to] = balances[to] + amount
+----------------------------------------
+
+4. - Guarantees that the recipient's balance is updated correctly after receiving coins.
+----------------------------------------
+
+5. 3. balances[msg.sender] >= amount
+----------------------------------------
+
+6. balances[to] <= maxBalance
+----------------------------------------
+
+7. - Ensures access control by validating sender balances and recipient limits.
+----------------------------------------
+
+8. 4. balances[tx.origin] == 10000
+----------------------------------------
+
+9. - Ensures that the initial balance is correctly assigned to the transaction origin.
+----------------------------------------
+
+10. 5. msg.sender != address(0)
+----------------------------------------
+
+11. - Prevents transactions from being initiated by the zero address.
+----------------------------------------

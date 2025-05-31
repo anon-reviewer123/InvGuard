@@ -1,0 +1,42 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:01:58
+Total Invariants: 10
+
+================================================================================
+CONTRACT CODE
+================================================================================
+// Solidity Smart Contract Code Goes Here
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.sender == organizer => bets.length > 0
+----------------------------------------
+
+2. - Only the organizer can access the list of bets.
+----------------------------------------
+
+3. 2. block.number % 2 == 0 => msg.sender.balance >= msg.value
+----------------------------------------
+
+4. - If the block number is even, the sender's balance must be greater than or equal to the bet amount.
+----------------------------------------
+
+5. 3. msg.sender == organizer => address(this).balance >= msg.value
+----------------------------------------
+
+6. - Only the organizer can trigger contract destruction, ensuring safe balance handling.
+----------------------------------------
+
+7. 4. msg.value > 0 => block.number % 2 == 0 || block.number % 2 == 1
+----------------------------------------
+
+8. - Each bet must align with block randomness, even if it's a bad source.
+----------------------------------------
+
+9. 5. msg.sender.send(msg.value) => msg.value <= address(this).balance
+----------------------------------------
+
+10. - When a bet wins, the contract must have enough balance to pay out.
+----------------------------------------

@@ -1,0 +1,11 @@
+Invariant Type: temporal
+Generated At: 2025-05-30 22:10:42
+
+Contract Code Snippet:
+pragma solidity ^0.4.0;
+contract lottopollo {
+  address leader;
+  uint    timestamp;
+
+Generated Invariant:
+now - timestamp > 24 hours ==> msg.sender.balance >= 1 ether

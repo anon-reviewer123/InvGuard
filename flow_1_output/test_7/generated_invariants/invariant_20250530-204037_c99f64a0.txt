@@ -1,0 +1,10 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 20:40:37
+
+Contract Code Snippet:
+function TokenSaleChallenge(address _player) public payable {
+    require(msg.value == 1 ether);
+}
+
+Generated Invariant:
+msg.value == 1 ether

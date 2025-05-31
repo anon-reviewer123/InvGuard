@@ -1,0 +1,70 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 21:50:37
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Reordered operations in `withdraw` function to update balances before making external calls to mitigate reentrancy.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. **Balance Consistency:** Ensure that balances are updated before external calls.
+2. **No Pendings:** There should be no pending operations that depend on external calls after balance updates.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.18;
+
+contract Reentrance {
+
+  mapping(address => uint) public balances;
+
+  function donate(address _to) public payable {
+    balances[_to] += msg.value;
+  }
+
+  function balanceOf(address _who) public view returns (uint balance) {
+    return balances[_who];
+  }
+
+  function withdraw(uint _amount) public {
+    if(balances[msg.sender] >= _amount) {
+      // <yes> <report> REENTRANCY
+      if(msg.sender.call.value(_amount)()) {
+        _amount;
+      }
+      balances[msg.sender] -= _amount;
+    }
+  }
+
+  function() public payable {}
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.18;
+
+contract Reentrance {
+
+  mapping(address => uint) public balances;
+
+  function donate(address _to) public payable {
+    balances[_to] += msg.value;
+  }
+
+  function balanceOf(address _who) public view returns (uint balance) {
+    return balances[_who];
+  }
+
+  function withdraw(uint _amount) public {
+    if(balances[msg.sender] >= _amount) {
+      balances[msg.sender] -= _amount; // Update balance before external call
+      msg.sender.call.value(_amount)();
+    }
+  }
+
+  function() public payable {}
+}

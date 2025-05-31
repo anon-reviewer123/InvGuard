@@ -1,0 +1,16 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:10:19
+
+Contract Code Snippet:
+pragma solidity ^0.4.25;
+
+contract DosNumber {
+    function clearDOS() public {
+        require(numElements>1500);
+        array = new uint[](0);
+        numElements = 0;
+    }
+
+
+Generated Invariant:
+numElements == 0 when clearDOS() is called

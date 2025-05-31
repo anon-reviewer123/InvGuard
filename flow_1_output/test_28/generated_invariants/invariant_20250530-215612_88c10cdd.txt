@@ -1,0 +1,8 @@
+Invariant Type: system_configuration
+Generated At: 2025-05-30 21:56:12
+
+Contract Code Snippet:
+uint public MinDeposit = 1 ether;
+
+Generated Invariant:
+MinDeposit == 1 ether

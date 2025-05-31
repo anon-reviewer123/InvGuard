@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 21:38:30
+
+Contract Code Snippet:
+_balances[msg.sender] = _balances[msg.sender].sub(value);
+
+Generated Invariant:
+_balances[to] = _balances[to] + value

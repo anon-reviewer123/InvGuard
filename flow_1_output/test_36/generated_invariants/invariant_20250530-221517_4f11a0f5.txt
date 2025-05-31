@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 22:15:17
+
+Contract Code Snippet:
+mapping (address => uint) userBalances;
+
+Generated Invariant:
+userBalances[msg.sender] >= 0 at any time

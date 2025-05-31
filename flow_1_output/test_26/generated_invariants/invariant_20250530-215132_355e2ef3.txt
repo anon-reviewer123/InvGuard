@@ -1,0 +1,12 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:51:32
+
+Contract Code Snippet:
+mapping (address => uint) userBalance;
+
+function addToBalance() payable{
+    userBalance[msg.sender] += msg.value;
+}
+
+Generated Invariant:
+userBalance[msg.sender] >= 0

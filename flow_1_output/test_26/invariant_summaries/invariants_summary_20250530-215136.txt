@@ -1,0 +1,49 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:51:36
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.15;
+
+contract Reentrance {
+    mapping (address => uint) userBalance;
+
+    function getBalance(address u) constant returns(uint){
+        return userBalance[u];
+    }
+
+    function addToBalance() payable{
+        userBalance[msg.sender] += msg.value;
+    }
+
+    function withdrawBalance(){
+        // send userBalance[msg.sender] ethers to msg.sender
+        // if mgs.sender is a contract, it will call its fallback function
+        // <yes> <report> REENTRANCY
+        if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){ 
+            throw;
+        }
+        userBalance[msg.sender] = 0;
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. userBalance[msg.sender] >= 0
+----------------------------------------
+
+2. userBalance[msg.sender] == 0 after withdrawBalance()
+----------------------------------------
+
+3. msg.sender.call.value(userBalance[msg.sender])() executes before state update
+----------------------------------------
+
+4. msg.sender can only withdraw their own balance
+----------------------------------------
+
+5. userBalance[msg.sender] <= address(this).balance
+----------------------------------------

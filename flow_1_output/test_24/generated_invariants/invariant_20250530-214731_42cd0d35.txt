@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:47:31
+
+Contract Code Snippet:
+require(msg.sender.call.value(_weiToWithdraw)());
+
+Generated Invariant:
+msg.sender.call.value(_weiToWithdraw)() == true

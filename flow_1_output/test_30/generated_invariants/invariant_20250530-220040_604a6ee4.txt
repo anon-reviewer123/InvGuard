@@ -1,0 +1,8 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 22:00:40
+
+Contract Code Snippet:
+function() public payable{}
+
+Generated Invariant:
+msg.value == 0 || msg.value >= MinDeposit

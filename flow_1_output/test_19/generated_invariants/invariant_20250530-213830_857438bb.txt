@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:38:30
+
+Contract Code Snippet:
+function transfer(address to, uint256 value) public returns (bool) {
+
+Generated Invariant:
+_balances[msg.sender] >= value

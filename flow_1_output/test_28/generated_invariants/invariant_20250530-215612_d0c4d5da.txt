@@ -1,0 +1,19 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:56:12
+
+Contract Code Snippet:
+function Deposit()
+    public
+    payable
+    {
+        if(msg.value > MinDeposit)
+        {
+            balances[msg.sender]+=msg.value;
+            TransferLog.AddMessage(msg.sender,msg.value,"Deposit");
+            lastBlock = block.number;
+        }
+    }
+
+Generated Invariant:
+msg.value > MinDeposit 
+ --> balances[msg.sender] += msg.value

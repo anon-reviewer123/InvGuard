@@ -1,0 +1,15 @@
+Invariant Type: business_logic
+Generated At: 2025-05-30 21:41:42
+
+Contract Code Snippet:
+function setReward() public payable {
+    require (!claimed);
+    
+    require(msg.sender == owner);
+    // <yes> <report> FRONT_RUNNING
+    owner.transfer(reward);
+    reward = msg.value;
+}
+
+Generated Invariant:
+reward == msg.value during setReward

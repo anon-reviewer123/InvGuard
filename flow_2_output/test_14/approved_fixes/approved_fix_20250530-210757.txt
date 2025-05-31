@@ -1,0 +1,86 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 21:07:57
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Replaced the vulnerable `send` calls with a more secure pattern using a withdrawal method, preventing DoS attacks and re-entrancy vulnerabilities.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. **Atomicity**: Ensured that operations complete without interruption before state changes.
+2. **Consistency**: Contract state remains valid after each operation.
+3. **Isolation**: External calls do not allow re-entrancy into contract methods.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+/*
+ * @source: https://github.com/trailofbits/not-so-smart-contracts/blob/master/denial_of_service/auction.sol
+ * @author: -
+ * @vulnerable_at_lines: 23
+ */
+
+pragma solidity ^0.4.15;
+
+//Auction susceptible to DoS attack
+contract DosAuction {
+  address currentFrontrunner;
+  uint currentBid;
+
+  //Takes in bid, refunding the frontrunner if they are outbid
+  function bid() payable {
+    require(msg.value > currentBid);
+
+    //If the refund fails, the entire transaction reverts.
+    //Therefore a frontrunner who always fails will win
+    if (currentFrontrunner != 0) {
+      //E.g. if recipients fallback function is just revert()
+      // <yes> <report> DENIAL_OF_SERVICE
+      require(currentFrontrunner.send(currentBid));
+    }
+
+    currentFrontrunner = msg.sender;
+    currentBid         = msg.value;
+  }
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+/*
+ * @source: https://github.com/trailofbits/not-so-smart-contracts/blob/master/denial_of_service/auction.sol
+ * @author: -
+ * @vulnerable_at_lines: 23
+ */
+
+pragma solidity ^0.4.15;
+
+// Denial of Service Fixed Auction Contract
+contract SafeAuction {
+  address public currentFrontrunner;
+  uint public currentBid;
+  mapping(address => uint) public pendingReturns;
+
+  // Takes in bid, refunding the frontrunner if they are outbid
+  function bid() payable {
+    require(msg.value > currentBid);
+
+    // Store the current bid for refund if necessary
+    pendingReturns[currentFrontrunner] = currentBid;
+
+    // Update the frontrunner
+    currentFrontrunner = msg.sender;
+    currentBid = msg.value;
+  }
+
+  // Safe withdrawal method for refunds
+  function withdraw() {
+    uint refund = pendingReturns[msg.sender];
+    if (refund > 0) {
+      pendingReturns[msg.sender] = 0; // Prevents re-entrancy
+      require(msg.sender.send(refund));
+    }
+  }
+}

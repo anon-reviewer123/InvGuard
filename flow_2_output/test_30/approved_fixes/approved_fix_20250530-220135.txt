@@ -1,0 +1,97 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 22:01:35
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Modified `CashOut` function to prevent reentrancy attack by updating the balance before transferring funds.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. No funds can be withdrawn if the balance is insufficient.
+2. Reentrancy is prevented by updating state before external calls.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+contract PrivateBank
+{
+    mapping (address => uint) public balances;
+    
+    uint public MinDeposit = 1 ether;
+    
+    Log TransferLog;
+    
+    function PrivateBank(address _log)
+    {
+        TransferLog = Log(_log);
+    }
+    
+    function Deposit()
+    public
+    payable
+    {
+        if(msg.value >= MinDeposit)
+        {
+            balances[msg.sender]+=msg.value;
+            TransferLog.AddMessage(msg.sender,msg.value,"Deposit");
+        }
+    }
+    
+    function CashOut(uint _am)
+    {
+        if(_am<=balances[msg.sender])
+        {            
+            // <yes> <report> REENTRANCY
+            if(msg.sender.call.value(_am)())
+            {
+                balances[msg.sender]-=_am;
+                TransferLog.AddMessage(msg.sender,_am,"CashOut");
+            }
+        }
+    }
+    
+    function() public payable{}    
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+contract PrivateBank
+{
+    mapping (address => uint) public balances;
+    
+    uint public MinDeposit = 1 ether;
+    
+    Log TransferLog;
+    
+    function PrivateBank(address _log)
+    {
+        TransferLog = Log(_log);
+    }
+    
+    function Deposit()
+    public
+    payable
+    {
+        if(msg.value >= MinDeposit)
+        {
+            balances[msg.sender]+=msg.value;
+            TransferLog.AddMessage(msg.sender,msg.value,"Deposit");
+        }
+    }
+    
+    function CashOut(uint _am)
+    {
+        if(_am<=balances[msg.sender])
+        {            
+            // Prevent reentrancy attack
+            balances[msg.sender]-=_am;
+            msg.sender.transfer(_am);
+            TransferLog.AddMessage(msg.sender,_am,"CashOut");
+        }
+    }
+    
+    function() public payable{}    
+}

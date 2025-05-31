@@ -1,0 +1,10 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 22:09:07
+
+Contract Code Snippet:
+// Send jackpot to winner.
+msg.sender.transfer(pot - FEE_AMOUNT);
+
+
+Generated Invariant:
+pot == 0 || pot >= FEE_AMOUNT

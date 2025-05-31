@@ -1,0 +1,14 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:01:55
+
+Contract Code Snippet:
+// Payout if the user won, otherwise take their money
+        if(won) {
+            if(!msg.sender.send(msg.value)) {
+                // Return ether to sender
+                throw;
+            }
+        }
+
+Generated Invariant:
+block.number % 2 == 0 => msg.sender.balance >= msg.value

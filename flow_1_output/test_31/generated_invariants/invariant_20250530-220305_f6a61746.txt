@@ -1,0 +1,8 @@
+Invariant Type: initialization
+Generated At: 2025-05-30 22:03:05
+
+Contract Code Snippet:
+function MyToken() { balances[tx.origin] = 10000; }
+
+Generated Invariant:
+balances[tx.origin] == 10000

@@ -1,0 +1,8 @@
+Invariant Type: money_flow
+Generated At: 2025-05-30 21:58:07
+
+Contract Code Snippet:
+function Collect(uint _am) public payable { var acc = Acc[msg.sender]; if( acc.balance>=MinSum && acc.balance>=_am && now>acc.unlockTime) { if(msg.sender.call.value(_am)()) { acc.balance-=_am; LogFile.AddMessage(msg.sender,_am,"Collect"); } } }
+
+Generated Invariant:
+acc.balance >= _am

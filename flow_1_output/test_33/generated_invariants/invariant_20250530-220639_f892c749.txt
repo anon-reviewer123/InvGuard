@@ -1,0 +1,8 @@
+Invariant Type: temporal
+Generated At: 2025-05-30 22:06:39
+
+Contract Code Snippet:
+if (block.timestamp < lastInvestmentTimestamp+ONE_MINUTE) throw;
+
+Generated Invariant:
+block.timestamp >= lastInvestmentTimestamp + 1 minutes

@@ -1,0 +1,8 @@
+Invariant Type: ACCESS_CONTROL
+Generated At: 2025-05-30 20:27:33
+
+Contract Code Snippet:
+modifier onlyOwner() { require(owners[msg.sender] != 0); _; }
+
+Generated Invariant:
+msg.sender != 0

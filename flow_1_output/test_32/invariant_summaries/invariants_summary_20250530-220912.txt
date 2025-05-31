@@ -1,0 +1,68 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:09:12
+Total Invariants: 10
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.15;
+
+/// @title Ethereum Lottery Game.
+contract EtherLotto {
+
+    uint constant TICKET_AMOUNT = 10;
+    uint constant FEE_AMOUNT = 1;
+    address public bank;
+    uint public pot;
+
+    function EtherLotto() {
+        bank = msg.sender;
+    }
+
+    function play() payable {
+        assert(msg.value == TICKET_AMOUNT);
+        pot += msg.value;
+        var random = uint(sha3(block.timestamp)) % 2;
+
+        if (random == 0) {
+            bank.transfer(FEE_AMOUNT);
+            msg.sender.transfer(pot - FEE_AMOUNT);
+            pot = 0;
+        }
+    }
+
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.value == TICKET_AMOUNT
+----------------------------------------
+
+2. - Ensures the exact ticket amount is sent for participation.
+----------------------------------------
+
+3. 2. pot >= TICKET_AMOUNT
+----------------------------------------
+
+4. - Guarantees the pot has enough funds to cover ticket purchases.
+----------------------------------------
+
+5. 3. pot == 0 || pot >= FEE_AMOUNT
+----------------------------------------
+
+6. - Ensures the pot can either be empty or have a sufficient amount to pay the fee.
+----------------------------------------
+
+7. 4. bank == msg.sender
+----------------------------------------
+
+8. - Ensures that the bank account receives the fee correctly.
+----------------------------------------
+
+9. 5. pot == 0 => pot == previous(pot) + TICKET_AMOUNT
+----------------------------------------
+
+10. - Guarantees the pot restarts correctly after being emptied.
+----------------------------------------

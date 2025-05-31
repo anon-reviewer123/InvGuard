@@ -1,0 +1,11 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 22:17:58
+
+Contract Code Snippet:
+function withdrawLeftOver() public {
+    require(payedOut);
+    msg.sender.send(this.balance);
+}
+
+Generated Invariant:
+msgSenderAccessCheck: msg.sender == owner

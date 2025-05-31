@@ -1,0 +1,46 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 20:58:52
+Total Invariants: 4
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.21;
+
+contract GuessTheRandomNumberChallenge {
+    uint8 answer;
+
+    function GuessTheRandomNumberChallenge() public payable {
+        require(msg.value == 1 ether);
+        // <yes> <report> BAD_RANDOMNESS
+        answer = uint8(keccak256(block.blockhash(block.number - 1), now));
+    }
+
+    function isComplete() public view returns (bool) {
+        return address(this).balance == 0;
+    }
+
+    function guess(uint8 n) public payable {
+        require(msg.value == 1 ether);
+
+        if (n == answer) {
+            msg.sender.transfer(2 ether);
+        }
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.value == 1 ether
+----------------------------------------
+
+2. 2. address(this).balance == 0 -> isComplete() == true
+----------------------------------------
+
+3. 3. n == answer -> msg.sender.transfer(2 ether)
+----------------------------------------
+
+4. 4. keccak256(block.blockhash(block.number - 1), now) == answer
+----------------------------------------

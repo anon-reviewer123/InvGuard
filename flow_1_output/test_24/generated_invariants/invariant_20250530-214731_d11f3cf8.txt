@@ -1,0 +1,8 @@
+Invariant Type: temporal
+Generated At: 2025-05-30 21:47:31
+
+Contract Code Snippet:
+require(now >= lastWithdrawTime[msg.sender] + 1 weeks);
+
+Generated Invariant:
+now >= lastWithdrawTime[msg.sender] + 1 weeks

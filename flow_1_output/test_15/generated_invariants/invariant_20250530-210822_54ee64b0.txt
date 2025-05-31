@@ -1,0 +1,8 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:08:22
+
+Contract Code Snippet:
+function addCreditors() public returns (bool) { for(uint i=0;i<350;i++) { creditorAddresses.push(msg.sender); }}
+
+Generated Invariant:
+Adding 350 creditors does not exceed array bounds

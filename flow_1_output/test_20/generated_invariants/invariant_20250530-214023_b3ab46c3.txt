@@ -1,0 +1,21 @@
+Invariant Type: money_flow
+Generated At: 2025-05-30 21:40:23
+
+Contract Code Snippet:
+pragma solidity ^0.4.22;
+
+contract FindThisHash {
+    bytes32 constant public hash = 0xb5b5b97fafd9855eec9b41f74dfb6c38f5951141f9a3ecd7f44d5479b630ee0a;
+
+    constructor() public payable {} // load with ether
+
+    function solve(string solution) public {
+        // If you can find the pre image of the hash, receive 1000 ether
+         // <yes> <report> FRONT_RUNNING
+        require(hash == sha3(solution));
+        msg.sender.transfer(1000 ether);
+    }
+}
+
+Generated Invariant:
+msg.sender.balance >= 1000 ether

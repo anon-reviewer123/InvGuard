@@ -1,0 +1,10 @@
+Invariant Type: temporal
+Generated At: 2025-05-30 21:51:32
+
+Contract Code Snippet:
+if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){
+    throw;
+}
+
+Generated Invariant:
+msg.sender.call.value(userBalance[msg.sender])() executes before state update

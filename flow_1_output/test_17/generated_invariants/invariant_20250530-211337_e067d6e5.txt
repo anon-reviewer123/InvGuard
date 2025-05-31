@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 21:13:37
+
+Contract Code Snippet:
+// Ensure there is enough balance to pay out creditors before paying them.
+
+Generated Invariant:
+creditorAmounts[i] <= address(this).balance - profitFromCrash

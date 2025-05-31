@@ -1,0 +1,9 @@
+Invariant Type: temporal
+Generated At: 2025-05-30 22:09:07
+
+Contract Code Snippet:
+// Restart jackpot.
+pot = 0;
+
+Generated Invariant:
+pot == 0 => pot == previous(pot) + TICKET_AMOUNT

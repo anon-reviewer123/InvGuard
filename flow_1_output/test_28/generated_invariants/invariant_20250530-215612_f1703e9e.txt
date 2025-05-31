@@ -1,0 +1,22 @@
+Invariant Type: reentrancy
+Generated At: 2025-05-30 21:56:12
+
+Contract Code Snippet:
+function CashOut(uint _am)
+    public
+    payable
+    {
+        if(_am<=balances[msg.sender]&&block.number>lastBlock)
+        {
+            // <yes> <report> REENTRANCY
+            if(msg.sender.call.value(_am)())
+            {
+                balances[msg.sender]-=_am;
+                TransferLog.AddMessage(msg.sender,_am,"CashOut");
+            }
+        }
+    }
+
+Generated Invariant:
+_am <= balances[msg.sender] 
+ --> block.number > lastBlock

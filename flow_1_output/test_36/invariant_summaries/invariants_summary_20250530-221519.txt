@@ -1,0 +1,35 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:15:19
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.0;
+contract SendBack {
+    mapping (address => uint) userBalances;
+    function withdrawBalance() {  
+		uint amountToWithdraw = userBalances[msg.sender];
+		userBalances[msg.sender] = 0;
+        msg.sender.send(amountToWithdraw);
+	}
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. userBalances[msg.sender] == 0 after withdrawal
+----------------------------------------
+
+2. msg.sender == owner before fund transfer
+----------------------------------------
+
+3. userBalances[msg.sender] >= 0 at any time
+----------------------------------------
+
+4. amountToWithdraw <= userBalances[msg.sender] before withdrawal
+----------------------------------------
+
+5. State transition (userBalances[msg.sender] = 0) occurs before external call
+----------------------------------------

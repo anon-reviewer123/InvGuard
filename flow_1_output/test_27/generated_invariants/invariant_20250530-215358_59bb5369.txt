@@ -1,0 +1,14 @@
+Invariant Type: money_flow
+Generated At: 2025-05-30 21:53:58
+
+Contract Code Snippet:
+if(msg.sender.call.value(_am)())
+{
+balances[msg.sender]-=_am;
+Log.AddMessage(msg.sender,_am,"Collect");
+}
+
+
+Generated Invariant:
+msg.sender.call.value(_am)() => balances[msg.sender] >= _am
+

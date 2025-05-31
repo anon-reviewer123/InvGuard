@@ -1,0 +1,53 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 20:29:42
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.24;
+
+contract Wallet {
+    address creator;
+
+    mapping(address => uint256) balances;
+
+    constructor() public {
+        creator = msg.sender;
+    }
+
+    function deposit() public payable {
+        assert(balances[msg.sender] + msg.value > balances[msg.sender]);
+        balances[msg.sender] += msg.value;
+    }
+
+    function withdraw(uint256 amount) public {
+        require(amount >= balances[msg.sender]);
+        msg.sender.transfer(amount);
+        balances[msg.sender] -= amount;
+    }
+
+    function migrateTo(address to) public {
+        require(creator == msg.sender);
+        to.transfer(this.balance);
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. balances[msg.sender] >= 0
+----------------------------------------
+
+2. 2. balances[msg.sender] + msg.value > balances[msg.sender]
+----------------------------------------
+
+3. 3. amount >= balances[msg.sender]
+----------------------------------------
+
+4. 4. creator == msg.sender
+----------------------------------------
+
+5. 5. this.balance == sum(balances)
+----------------------------------------

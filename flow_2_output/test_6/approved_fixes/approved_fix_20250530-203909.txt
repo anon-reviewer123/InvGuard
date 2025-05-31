@@ -1,0 +1,52 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 20:39:09
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Added overflow check to prevent arithmetic overflow during transfers.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. balanceOf[msg.sender] >= _value
+2. balanceOf[_to] + _value >= balanceOf[_to] (Overflow check)
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.10;
+
+contract IntegerOverflowAdd {
+    mapping (address => uint256) public balanceOf;
+
+    // INSECURE
+    function transfer(address _to, uint256 _value) public{
+        /* Check if sender has balance */
+        require(balanceOf[msg.sender] >= _value);
+        balanceOf[msg.sender] -= _value;
+        // <yes> <report> ARITHMETIC
+        balanceOf[_to] += _value;
+}
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.10;
+
+contract IntegerOverflowAdd {
+    mapping (address => uint256) public balanceOf;
+
+    // SECURE
+    function transfer(address _to, uint256 _value) public{
+        /* Check if sender has balance */
+        require(balanceOf[msg.sender] >= _value);
+
+        // Overflow check
+        require(balanceOf[_to] + _value >= balanceOf[_to]);
+
+        balanceOf[msg.sender] -= _value;
+        balanceOf[_to] += _value;
+    }
+}

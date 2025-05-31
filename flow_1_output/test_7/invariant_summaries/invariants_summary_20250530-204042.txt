@@ -1,0 +1,52 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 20:40:42
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.21;
+
+contract TokenSaleChallenge {
+    mapping(address => uint256) public balanceOf;
+    uint256 constant PRICE_PER_TOKEN = 1 ether;
+
+    function TokenSaleChallenge(address _player) public payable {
+        require(msg.value == 1 ether);
+    }
+
+    function isComplete() public view returns (bool) {
+        return address(this).balance < 1 ether;
+    }
+
+    function buy(uint256 numTokens) public payable {
+        require(msg.value == numTokens * PRICE_PER_TOKEN);
+        balanceOf[msg.sender] += numTokens;
+    }
+
+    function sell(uint256 numTokens) public {
+        require(balanceOf[msg.sender] >= numTokens);
+
+        balanceOf[msg.sender] -= numTokens;
+        msg.sender.transfer(numTokens * PRICE_PER_TOKEN);
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.value == numTokens * PRICE_PER_TOKEN
+----------------------------------------
+
+2. 2. balanceOf[msg.sender] >= numTokens
+----------------------------------------
+
+3. 3. msg.value == 1 ether
+----------------------------------------
+
+4. 4. address(this).balance < 1 ether == isComplete()
+----------------------------------------
+
+5. 5. balanceOf[msg.sender] + numTokens >= balanceOf[msg.sender]
+----------------------------------------

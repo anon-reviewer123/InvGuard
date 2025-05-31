@@ -1,0 +1,11 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 22:12:16
+
+Contract Code Snippet:
+function () public payable {
+        require(msg.value == 10 ether); // must send 10 ether to play
+        // <yes> <report> TIME_MANIPULATION
+
+
+Generated Invariant:
+msg.value == 10 ether

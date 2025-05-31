@@ -1,0 +1,8 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:08:22
+
+Contract Code Snippet:
+function iWin() public view returns (bool) { return win; }
+
+Generated Invariant:
+win remains false until emptyCreditors is called

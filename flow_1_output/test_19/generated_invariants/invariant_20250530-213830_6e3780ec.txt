@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:38:30
+
+Contract Code Snippet:
+require(value <= _balances[from]);
+
+Generated Invariant:
+_balances[from] >= value

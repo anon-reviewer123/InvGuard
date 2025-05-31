@@ -1,0 +1,8 @@
+Invariant Type: system_invariants
+Generated At: 2025-05-30 22:00:40
+
+Contract Code Snippet:
+function AddMessage(address _adr,uint _val,string _data) public { History.push(LastMsg); }
+
+Generated Invariant:
+TransferLog.History.length >= 0

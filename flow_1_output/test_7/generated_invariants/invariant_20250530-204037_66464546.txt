@@ -1,0 +1,12 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 20:40:37
+
+Contract Code Snippet:
+function buy(uint256 numTokens) public payable {
+    require(msg.value == numTokens * PRICE_PER_TOKEN);
+    // <yes> <report> ARITHMETIC
+    balanceOf[msg.sender] += numTokens;
+}
+
+Generated Invariant:
+msg.value == numTokens * PRICE_PER_TOKEN

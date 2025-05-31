@@ -1,0 +1,47 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:18:03
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.18;
+
+contract Lotto {
+
+    bool public payedOut = false;
+    address public winner;
+    uint public winAmount;
+
+    // ... extra functionality here
+
+    function sendToWinner() public {
+        require(!payedOut);
+        winner.send(winAmount);
+        payedOut = true;
+    }
+
+    function withdrawLeftOver() public {
+        require(payedOut);
+        msg.sender.send(this.balance);
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. payOutStatusAfterSendToWinner: payedOut == true
+----------------------------------------
+
+2. 2. ensureWinnerAddressSet: winner != 0
+----------------------------------------
+
+3. 3. balanceCheckBeforeWithdraw: this.balance >= winAmount
+----------------------------------------
+
+4. 4. payOutFlagIntegrity: payedOut == true implies winner.send(winAmount)
+----------------------------------------
+
+5. 5. msgSenderAccessCheck: msg.sender == owner
+----------------------------------------

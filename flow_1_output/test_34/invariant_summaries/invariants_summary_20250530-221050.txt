@@ -1,0 +1,68 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:10:50
+Total Invariants: 10
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.0;
+contract lottopollo {
+  address leader;
+  uint    timestamp;
+  function payOut(uint rand) internal {
+    // <yes> <report> TIME MANIPULATION
+    if ( rand> 0 && now - rand > 24 hours ) {
+      msg.sender.send( msg.value );
+
+      if ( this.balance > 0 ) {
+        leader.send( this.balance );
+      }
+    }
+    else if ( msg.value >= 1 ether ) {
+      leader = msg.sender;
+      timestamp = rand;
+    }
+  }
+  function randomGen() constant returns (uint randomNumber) {
+      // <yes> <report> TIME MANIPULATION
+      return block.timestamp;   
+    }
+  function draw(uint seed){
+    uint randomNumber=randomGen(); 
+    payOut(randomNumber);
+  }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.sender.balance >= 0
+----------------------------------------
+
+2. * A sender's balance should not be negative after a payout.
+----------------------------------------
+
+3. 2. leader != address(0)
+----------------------------------------
+
+4. * The leader address should always be valid.
+----------------------------------------
+
+5. 3. now - timestamp > 24 hours ==> msg.sender.balance >= 1 ether
+----------------------------------------
+
+6. * If 24 hours have passed since the last update, a minimum balance should exist for the sender.
+----------------------------------------
+
+7. 4. this.balance >= 0
+----------------------------------------
+
+8. * The contract's balance should never be negative.
+----------------------------------------
+
+9. 5. block.timestamp >= seed
+----------------------------------------
+
+10. * The timestamp of the block should be greater than or equal to the randomness seed used in the draw.
+----------------------------------------

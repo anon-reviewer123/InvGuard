@@ -1,0 +1,8 @@
+Invariant Type: DATA_INTEGRITY
+Generated At: 2025-05-30 20:27:33
+
+Contract Code Snippet:
+require(owners[_owner] == msg.sender || (owners[_owner] != 0 && msg.sender == root));
+
+Generated Invariant:
+owners[_owner] != 0

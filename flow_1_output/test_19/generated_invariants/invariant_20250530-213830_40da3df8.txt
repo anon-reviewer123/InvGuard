@@ -1,0 +1,8 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 21:38:30
+
+Contract Code Snippet:
+constructor(uint totalSupply){ _balances[msg.sender] = totalSupply; }
+
+Generated Invariant:
+_totalSupply >= sum(_balances)

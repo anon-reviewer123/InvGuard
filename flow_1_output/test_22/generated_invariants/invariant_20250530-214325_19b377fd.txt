@@ -1,0 +1,8 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 21:43:25
+
+Contract Code Snippet:
+if(msg.sender!=owner) throw;
+
+Generated Invariant:
+msg.sender == owner

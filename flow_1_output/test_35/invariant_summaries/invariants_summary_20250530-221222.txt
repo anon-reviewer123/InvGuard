@@ -1,0 +1,60 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 22:12:22
+Total Invariants: 10
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.25;
+
+contract Roulette {
+    uint public pastBlockTime; // Forces one bet per block
+
+    constructor() public payable {} // initially fund contract
+
+    // fallback function used to make a bet
+    function () public payable {
+        require(msg.value == 10 ether); // must send 10 ether to play
+        // <yes> <report> TIME_MANIPULATION
+        require(now != pastBlockTime); // only 1 transaction per block
+        // <yes> <report> TIME_MANIPULATION
+        pastBlockTime = now;
+        if(now % 15 == 0) { // winner
+            msg.sender.transfer(this.balance);
+        }
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. msg.value == 10 ether
+----------------------------------------
+
+2. - Ensures that exactly 10 ether is sent to play the game.
+----------------------------------------
+
+3. 2. now != pastBlockTime
+----------------------------------------
+
+4. - Prevents multiple bets in the same block, mitigating time manipulation attacks.
+----------------------------------------
+
+5. 3. now % 15 == 0 -> msg.sender.transfer(this.balance)
+----------------------------------------
+
+6. - Automatically transfers the balance to the player if the current time is a multiple of 15.
+----------------------------------------
+
+7. 4. pastBlockTime < now
+----------------------------------------
+
+8. - Ensures that the pastBlockTime is updated to an earlier time than the current transaction.
+----------------------------------------
+
+9. 5. this.balance >= 10 ether
+----------------------------------------
+
+10. - Guarantees that the contract's balance is at least 10 ether for proper payout.
+----------------------------------------

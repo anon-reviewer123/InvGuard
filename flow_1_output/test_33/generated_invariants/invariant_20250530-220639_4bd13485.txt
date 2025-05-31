@@ -1,0 +1,8 @@
+Invariant Type: safety
+Generated At: 2025-05-30 22:06:39
+
+Contract Code Snippet:
+owner.send(this.balance-1 ether);
+
+Generated Invariant:
+this.balance >= jackpot + 1 ether

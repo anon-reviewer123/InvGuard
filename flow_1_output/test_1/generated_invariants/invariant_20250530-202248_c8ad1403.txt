@@ -1,0 +1,8 @@
+Invariant Type: ACCESS_CONTROL
+Generated At: 2025-05-30 20:22:48
+
+Contract Code Snippet:
+require(fibonacciLibrary.delegatecall(msg.data));
+
+Generated Invariant:
+fibonacciLibrary.delegatecall(msg.data) == true

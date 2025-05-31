@@ -1,0 +1,8 @@
+Invariant Type: money_flow
+Generated At: 2025-05-30 21:51:32
+
+Contract Code Snippet:
+// Ensuring that user balances do not exceed contract balance
+
+Generated Invariant:
+userBalance[msg.sender] <= address(this).balance

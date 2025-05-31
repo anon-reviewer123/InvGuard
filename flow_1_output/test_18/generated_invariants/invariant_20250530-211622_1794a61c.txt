@@ -1,0 +1,8 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:16:22
+
+Contract Code Snippet:
+for(uint x; x < refundAddresses.length; x++) {
+
+Generated Invariant:
+x < refundAddresses.length

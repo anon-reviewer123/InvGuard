@@ -1,0 +1,55 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:08:26
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.25;
+
+contract DosGas {
+
+    address[] creditorAddresses;
+    bool win = false;
+
+    function emptyCreditors() public {
+        if(creditorAddresses.length>1500) {
+            creditorAddresses = new address[](0);
+            win = true;
+        }
+    }
+
+    function addCreditors() public returns (bool) {
+        for(uint i=0;i<350;i++) {
+          creditorAddresses.push(msg.sender);
+        }
+        return true;
+    }
+
+    function iWin() public view returns (bool) {
+        return win;
+    }
+
+    function numberCreditors() public view returns (uint) {
+        return creditorAddresses.length;
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. creditorAddresses.length <= 1500 after emptyCreditors execution
+----------------------------------------
+
+2. 2. win == true if creditorAddresses.length > 1500
+----------------------------------------
+
+3. 3. creditorAddresses.length == 0 after initialization
+----------------------------------------
+
+4. 4. Adding 350 creditors does not exceed array bounds
+----------------------------------------
+
+5. 5. win remains false until emptyCreditors is called
+----------------------------------------

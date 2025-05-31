@@ -1,0 +1,69 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 22:19:25
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Replaced unchecked low-level calls with safer `transfer` method. Added checks to ensure valid addresses and restricted access to the winner for leftover withdrawals.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. `payedOut == true` only after funds are transferred.` 
+2. `balance == Old(balance) - winAmount` after transfer.
+3. `winner != address(0)` to prevent sending funds to an invalid address.
+4. Only `msg.sender` (winner) can withdraw leftover funds.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.18;
+ 
+ contract Lotto {
+
+     bool public payedOut = false;
+     address public winner;
+     uint public winAmount;
+
+     // ... extra functionality here
+
+     function sendToWinner() public {
+         require(!payedOut);
+         // <yes> <report> UNCHECKED_LL_CALLS
+         winner.send(winAmount);
+         payedOut = true;
+     }
+
+     function withdrawLeftOver() public {
+         require(payedOut);
+         // <yes> <report> UNCHECKED_LL_CALLS
+         msg.sender.send(this.balance);
+     }
+ }
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.18;
+ 
+ contract Lotto {
+
+     bool public payedOut = false;
+     address public winner;
+     uint public winAmount;
+
+     // ... extra functionality here
+
+     function sendToWinner() public {
+         require(!payedOut);
+         require(winner != address(0)); // Ensure winner address is valid
+         winner.transfer(winAmount); // Use `transfer` instead of `send`
+         payedOut = true;
+     }
+
+     function withdrawLeftOver() public {
+         require(payedOut);
+         require(msg.sender == winner); // Only winner can withdraw
+         msg.sender.transfer(address(this).balance);
+     }
+ }

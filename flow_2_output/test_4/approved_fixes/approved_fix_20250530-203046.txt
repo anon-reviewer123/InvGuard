@@ -1,0 +1,102 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 20:30:46
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+Replaced `require(amount >= balances[msg.sender])` with `require(amount <= balances[msg.sender])` in `withdraw` function to prevent unauthorized withdrawals. Also adjusted the order of operations to mitigate re-entrancy.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. 
+   - **Expression**: `balances[msg.sender] + msg.value > balances[msg.sender]`  
+   - **Relevance**: Ensures no overflow occurs during deposit.  
+   - **Violation Type**: None.
+
+2. 
+   - **Expression**: `balances[msg.sender] >= amount`  
+   - **Relevance**: Prevents withdrawal of an amount greater than the balance.  
+   - **Violation Type**: Integrity.
+
+3. 
+   - **Expression**: `creator == msg.sender`  
+   - **Relevance**: Ensures only the creator can perform sensitive actions like migration.  
+   - **Violation Type**: Access Control.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.24;
+
+ /* User can add pay in and withdraw Ether.
+    Unfortunatly, the developer was drunk and used the wrong comparison operator in "withdraw()"
+    Anybody can withdraw arbitrary amounts of Ether :()
+ */
+
+ contract Wallet {
+     address creator;
+
+     mapping(address => uint256) balances;
+
+     constructor() public {
+         creator = msg.sender;
+     }
+
+     function deposit() public payable {
+         assert(balances[msg.sender] + msg.value > balances[msg.sender]);
+         balances[msg.sender] += msg.value;
+     }
+
+     function withdraw(uint256 amount) public {
+         // <yes> <report> ACCESS_CONTROL
+         require(amount >= balances[msg.sender]);
+         msg.sender.transfer(amount);
+         balances[msg.sender] -= amount;
+     }
+
+     // In an emergency the owner can migrate  allfunds to a different address.
+
+     function migrateTo(address to) public {
+         require(creator == msg.sender);
+         to.transfer(this.balance);
+     }
+
+ }
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.24;
+
+ /* User can add pay in and withdraw Ether.
+    Unfortunately, the developer was drunk and used the wrong comparison operator in "withdraw()"
+    Fixed to prevent arbitrary withdrawals.
+ */
+
+ contract Wallet {
+     address creator;
+
+     mapping(address => uint256) balances;
+
+     constructor() public {
+         creator = msg.sender;
+     }
+
+     function deposit() public payable {
+         assert(balances[msg.sender] + msg.value > balances[msg.sender]);
+         balances[msg.sender] += msg.value;
+     }
+
+     function withdraw(uint256 amount) public {
+         // <no> <explain> REENTRANCY
+         require(amount <= balances[msg.sender]);
+         balances[msg.sender] -= amount;
+         msg.sender.transfer(amount);
+     }
+
+     function migrateTo(address to) public {
+         require(creator == msg.sender);
+         to.transfer(address(this).balance);
+     }
+ }

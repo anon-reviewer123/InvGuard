@@ -1,0 +1,10 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 22:09:07
+
+Contract Code Snippet:
+// Send fee to bank account.
+bank.transfer(FEE_AMOUNT);
+
+
+Generated Invariant:
+bank == msg.sender

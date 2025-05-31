@@ -1,0 +1,13 @@
+Invariant Type: security
+Generated At: 2025-05-30 21:01:55
+
+Contract Code Snippet:
+// Suicide :(
+    function destroy() {
+        if(msg.sender != organizer) { throw; }
+        
+        suicide(organizer);
+    }
+
+Generated Invariant:
+msg.sender == organizer => address(this).balance >= msg.value

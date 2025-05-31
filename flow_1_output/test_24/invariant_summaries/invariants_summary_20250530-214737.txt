@@ -1,0 +1,65 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:47:37
+Total Invariants: 10
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.10;
+
+contract EtherStore {
+
+    uint256 public withdrawalLimit = 1 ether;
+    mapping(address => uint256) public lastWithdrawTime;
+    mapping(address => uint256) public balances;
+
+    function depositFunds() public payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    function withdrawFunds (uint256 _weiToWithdraw) public {
+        require(balances[msg.sender] >= _weiToWithdraw);
+        // limit the withdrawal
+        require(_weiToWithdraw <= withdrawalLimit);
+        // limit the time allowed to withdraw
+        require(now >= lastWithdrawTime[msg.sender] + 1 weeks);
+        // <yes> <report> REENTRANCY
+        require(msg.sender.call.value(_weiToWithdraw)());
+        balances[msg.sender] -= _weiToWithdraw;
+        lastWithdrawTime[msg.sender] = now;
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. balances[msg.sender] >= _weiToWithdraw
+----------------------------------------
+
+2. - Ensures that the account balance is sufficient for the withdrawal.
+----------------------------------------
+
+3. 2. _weiToWithdraw <= withdrawalLimit
+----------------------------------------
+
+4. - Restricts the withdrawal amount to a predefined limit.
+----------------------------------------
+
+5. 3. now >= lastWithdrawTime[msg.sender] + 1 weeks
+----------------------------------------
+
+6. - Enforces a time constraint between consecutive withdrawals.
+----------------------------------------
+
+7. 4. msg.sender.call.value(_weiToWithdraw)() == true
+----------------------------------------
+
+8. - Checks that the withdrawal call executes successfully.
+----------------------------------------
+
+9. 5. balances[msg.sender] - _weiToWithdraw >= 0
+----------------------------------------
+
+10. - Ensures that the balance does not go negative after withdrawal.
+----------------------------------------

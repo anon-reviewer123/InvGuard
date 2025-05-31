@@ -1,0 +1,11 @@
+Invariant Type: money_flow
+Generated At: 2025-05-30 21:56:12
+
+Contract Code Snippet:
+if(msg.sender.call.value(_am)())
+{
+    balances[msg.sender]-=_am;
+}
+
+Generated Invariant:
+balances[msg.sender] >= _am

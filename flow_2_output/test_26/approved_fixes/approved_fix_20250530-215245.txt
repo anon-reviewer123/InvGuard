@@ -1,0 +1,72 @@
+Approved Smart Contract Fix
+Generated At: 2025-05-30 21:52:45
+
+================================================================================
+FIX DESCRIPTION
+================================================================================
+The fix involves modifying the `withdrawBalance` function to update the user balance before making an external call. This prevents reentrancy attacks. Additionally, it includes a check to restore the balance if the external call fails.
+
+================================================================================
+INVARIANTS CONSIDERED
+================================================================================
+1. userBalance[msg.sender] 
+   - Ensures that the user balance is correctly updated before and after external calls.
+
+2. msg.sender.call.value(amount)() 
+   - Ensures that external calls do not allow reentrancy by updating the state beforehand.
+
+================================================================================
+ORIGINAL CONTRACT
+================================================================================
+pragma solidity ^0.4.15;
+
+contract Reentrance {
+    mapping (address => uint) userBalance;
+
+    function getBalance(address u) constant returns(uint){
+        return userBalance[u];
+    }
+
+    function addToBalance() payable{
+        userBalance[msg.sender] += msg.value;
+    }
+
+    function withdrawBalance(){
+        // send userBalance[msg.sender] ethers to msg.sender
+        // if mgs.sender is a contract, it will call its fallback function
+        // <yes> <report> REENTRANCY
+        if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){ 
+            throw;
+        }
+        userBalance[msg.sender] = 0;
+    }
+}
+
+================================================================================
+FIXED CONTRACT
+================================================================================
+pragma solidity ^0.4.15;
+
+contract Reentrance {
+    mapping (address => uint) userBalance;
+
+    function getBalance(address u) constant returns(uint){
+        return userBalance[u];
+    }
+
+    function addToBalance() payable{
+        userBalance[msg.sender] += msg.value;
+    }
+
+    function withdrawBalance(){
+        // Check if the balance is sufficient before allowing withdrawal
+        if (userBalance[msg.sender] > 0) {
+            uint amount = userBalance[msg.sender];
+            userBalance[msg.sender] = 0; // Update state before external call
+            // Safely transfer funds
+            if (!msg.sender.call.value(amount)()) {
+                userBalance[msg.sender] = amount; // Revert state if transfer fails
+            }
+        }
+    }
+}

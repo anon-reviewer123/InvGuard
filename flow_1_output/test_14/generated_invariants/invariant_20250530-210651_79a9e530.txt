@@ -1,0 +1,10 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:06:51
+
+Contract Code Snippet:
+if (currentFrontrunner != 0) {
+    require(currentFrontrunner.send(currentBid));
+}
+
+Generated Invariant:
+currentFrontrunner != 0 -> currentFrontrunner.send(currentBid)

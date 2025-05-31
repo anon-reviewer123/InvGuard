@@ -1,0 +1,10 @@
+Invariant Type: consistency
+Generated At: 2025-05-30 20:29:38
+
+Contract Code Snippet:
+function migrateTo(address to) public {
+    to.transfer(this.balance);
+}
+
+Generated Invariant:
+this.balance == sum(balances)

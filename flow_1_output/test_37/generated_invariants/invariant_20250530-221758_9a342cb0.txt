@@ -1,0 +1,14 @@
+Invariant Type: access_control
+Generated At: 2025-05-30 22:17:58
+
+Contract Code Snippet:
+address public winner;
+
+function sendToWinner() public {
+    require(!payedOut);
+    winner.send(winAmount);
+    payedOut = true;
+}
+
+Generated Invariant:
+ensureWinnerAddressSet: winner != 0

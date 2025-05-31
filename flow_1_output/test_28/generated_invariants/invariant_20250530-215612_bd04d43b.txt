@@ -1,0 +1,8 @@
+Invariant Type: data_consistency
+Generated At: 2025-05-30 21:56:12
+
+Contract Code Snippet:
+History.push(LastMsg);
+
+Generated Invariant:
+TransferLog.History.length >= 0

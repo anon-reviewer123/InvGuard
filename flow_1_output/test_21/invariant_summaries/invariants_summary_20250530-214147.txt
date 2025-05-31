@@ -1,0 +1,54 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 21:41:47
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.16;
+
+contract EthTxOrderDependenceMinimal {
+    address public owner;
+    bool public claimed;
+    uint public reward;
+
+    function EthTxOrderDependenceMinimal() public {
+        owner = msg.sender;
+    }
+
+    function setReward() public payable {
+        require (!claimed);
+
+        require(msg.sender == owner);
+        // <yes> <report> FRONT_RUNNING
+        owner.transfer(reward);
+        reward = msg.value;
+    }
+
+    function claimReward(uint256 submission) {
+        require (!claimed);
+        require(submission < 10);
+        // <yes> <report> FRONT_RUNNING
+        msg.sender.transfer(reward);
+        claimed = true;
+    }
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. 1. owner == msg.sender
+----------------------------------------
+
+2. 2. claimed == true => reward == 0
+----------------------------------------
+
+3. 3. msg.sender == owner => reward != 0
+----------------------------------------
+
+4. 4. reward >= 0
+----------------------------------------
+
+5. 5. reward == msg.value during setReward
+----------------------------------------

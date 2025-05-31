@@ -1,0 +1,8 @@
+Invariant Type: safety
+Generated At: 2025-05-30 21:13:37
+
+Contract Code Snippet:
+// The system should keep running until 12 hours have passed without a new creditor.
+
+Generated Invariant:
+lastTimeOfNewCredit + TWELVE_HOURS >= block.timestamp

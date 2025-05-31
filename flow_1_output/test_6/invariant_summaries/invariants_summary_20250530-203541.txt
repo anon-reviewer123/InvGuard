@@ -1,0 +1,39 @@
+Smart Contract Invariants Summary
+Generated At: 2025-05-30 20:35:41
+Total Invariants: 5
+
+================================================================================
+CONTRACT CODE
+================================================================================
+pragma solidity ^0.4.10;
+
+contract IntegerOverflowAdd {
+    mapping (address => uint256) public balanceOf;
+
+    // INSECURE
+    function transfer(address _to, uint256 _value) public{
+        /* Check if sender has balance */
+        require(balanceOf[msg.sender] >= _value);
+        balanceOf[msgender] -= _value;
+        // <yes> <report> ARITHMETIC
+        balanceOf[_to] += _value;
+}
+
+================================================================================
+GENERATED INVARIANTS
+================================================================================
+
+1. balanceOf[msg.sender] >= _value
+----------------------------------------
+
+2. balanceOf[_to] = balanceOf[_to] + _value
+----------------------------------------
+
+3. balanceOf[msg.sender] < balanceOf[msg.sender] + _value
+----------------------------------------
+
+4. require(_value > 0)
+----------------------------------------
+
+5. balanceOf[_to] >= 0
+----------------------------------------

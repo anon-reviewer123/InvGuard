@@ -1,0 +1,8 @@
+Invariant Type: LIVENESS
+Generated At: 2025-05-30 20:22:48
+
+Contract Code Snippet:
+withdrawalCounter += 1;
+
+Generated Invariant:
+withdrawalCounter >= 0
