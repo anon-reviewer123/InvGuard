@@ -1,0 +1,3 @@
+pip install z3-solver
+pip install solidity-parser
+pip install openai-agents
