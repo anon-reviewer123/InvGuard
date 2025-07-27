@@ -1,0 +1,60 @@
+{
+  "invariants": [
+    {
+      "name": "Total Supply Consistency",
+      "expression": "_totalSupply == sum(balances) + balances[0x0]",
+      "description": "The total supply is always the sum of all user balances including the zero address."
+    },
+    {
+      "name": "Non-negative Balances",
+      "expression": "forall(address a: balances[a] >= 0)",
+      "description": "No address should have a negative token balance."
+    },
+    {
+      "name": "No Overflow on Additions",
+      "expression": "forall(uint a, uint b: safeAdd(a, b) >= a)",
+      "description": "Addition of two unsigned integers does not overflow."
+    },
+    {
+      "name": "No Underflow on Subtractions",
+      "expression": "forall(uint a, uint b: b <= a => safeSub(a, b) <= a)",
+      "description": "Subtraction does not result in an underflow."
+    },
+    {
+      "name": "Transfer Updates Balances Correctly",
+      "expression": "transfer(a, b, x): balances[a]_after == balances[a]_before - x && balances[b]_after == balances[b]_before + x",
+      "description": "Token transfers decrease sender and increase receiver balances appropriately."
+    },
+    {
+      "name": "Transfer From Respects Allowance",
+      "expression": "transferFrom(x, y, z): allowed[x][caller]_after == allowed[x][caller]_before - z",
+      "description": "Transfers via `transferFrom` reduce the allowance of the spender."
+    },
+    {
+      "name": "Valid Allowance Assignment",
+      "expression": "approve(spender, amount): allowed[msg.sender][spender] == amount",
+      "description": "Approval sets the correct allowance amount."
+    },
+    {
+      "name": "Owner Initial Balance Matches Total Supply",
+      "expression": "balances[0x303535c560c1787FD8638f1a0B66552710978349] == _totalSupply",
+      "description": "Contract creator initially holds the entire supply of tokens."
+    },
+    {
+      "name": "Zero Address Is Not Funded",
+      "expression": "balances[0x0] == 0",
+      "description": "Zero address should not receive tokens under normal operation."
+    },
+    {
+      "name": "Transfer Emits Transfer Event",
+      "expression": "transfer(): emits Transfer(from, to, tokens)",
+      "description": "Transfers always emit the Transfer event."
+    },
+    {
+      "name": "Approve Emits Approval Event",
+      "expression": "approve(): emits Approval(owner, spender, tokens)",
+      "description": "Approvals emit the Approval event with correct values."
+    }
+  ]
+}
+

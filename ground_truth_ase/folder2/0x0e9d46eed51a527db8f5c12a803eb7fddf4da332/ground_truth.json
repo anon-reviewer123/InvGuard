@@ -1,0 +1,53 @@
+[
+  {
+    "invariant": "Total balance consistency",
+    "expression": "sum(balanceOf[addr] for all addr) <= totalSupply",
+    "description": "The sum of all balances cannot exceed the total supply."
+  },
+  {
+    "invariant": "Total supply minimum",
+    "expression": "totalSupply >= 0",
+    "description": "The total token supply can never be negative."
+  },
+  {
+    "invariant": "No overflow during transfer",
+    "expression": "balanceOf[_to] + _value >= balanceOf[_to]",
+    "description": "Prevents overflow during token transfers."
+  },
+  {
+    "invariant": "Sender has sufficient balance for transfer",
+    "expression": "balanceOf[_from] >= _value",
+    "description": "Ensures the sender has enough tokens to transfer."
+  },
+  {
+    "invariant": "Allowance respects limits",
+    "expression": "_value <= allowance[_from][msg.sender]",
+    "description": "TransferFrom must not exceed approved allowance."
+  },
+  {
+    "invariant": "Balance conservation on internal transfer",
+    "expression": "balanceOf[_from] + balanceOf[_to] == previousBalances",
+    "description": "No tokens are created or lost in an internal transfer."
+  },
+  {
+    "invariant": "Valid recipient on transfer",
+    "expression": "_to != 0x0",
+    "description": "Prevents transferring tokens to the zero address."
+  },
+  {
+    "invariant": "Burn reduces balance and totalSupply equally",
+    "expression": "after burn: balanceOf[sender] = before - _value AND totalSupply = before - _value",
+    "description": "Burning tokens reduces both the balance and the total supply by the same amount."
+  },
+  {
+    "invariant": "BurnFrom requires balance and allowance",
+    "expression": "balanceOf[_from] >= _value AND allowance[_from][msg.sender] >= _value",
+    "description": "Cannot burn more than allowed or owned."
+  },
+  {
+    "invariant": "Approve sets allowance exactly",
+    "expression": "allowance[msg.sender][_spender] == _value",
+    "description": "After approval, the allowance is exactly what was set."
+  }
+]
+

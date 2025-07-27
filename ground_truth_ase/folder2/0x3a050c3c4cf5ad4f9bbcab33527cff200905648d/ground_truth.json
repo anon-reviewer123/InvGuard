@@ -1,0 +1,59 @@
+[
+  {
+    "invariant": "Total supply is constant",
+    "expression": "totalSupply == 210000 * 10**18"
+  },
+  {
+    "invariant": "Sum of all balances equals total supply",
+    "expression": "sum(balances.values()) == totalSupply"
+  },
+  {
+    "invariant": "No address can have negative balance",
+    "expression": "forall addr in balances.keys(): balances[addr] >= 0"
+  },
+  {
+    "invariant": "Transfer should not mint or burn tokens unexpectedly",
+    "expression": "_from != address(0) && _to != address(0) && _from != _to"
+  },
+  {
+    "invariant": "Transfers only succeed if sender has sufficient balance",
+    "expression": "balances[_from] >= _value"
+  },
+  {
+    "invariant": "TransferFrom only succeeds if within allowance",
+    "expression": "allowed[_from][msg.sender] >= _value"
+  },
+  {
+    "invariant": "Approval must either reset to 0 or be set from 0 to mitigate race condition",
+    "expression": "_value == 0 || allowed[msg.sender][_spender] == 0"
+  },
+  {
+    "invariant": "Only controller can set approvalCounts or minRequiredApprovals",
+    "expression": "msg.sender == controller"
+  },
+  {
+    "invariant": "Only owner can trigger controllerApproval",
+    "expression": "msg.sender == owner"
+  },
+  {
+    "invariant": "controllerApproval only allowed if approvals threshold is met",
+    "expression": "approvalCounts >= minRequiredApprovals"
+  },
+  {
+    "invariant": "Burned tokens are sent to the designated burn address",
+    "expression": "_to == burnedTokensReceiver in controllerApproval"
+  },
+  {
+    "invariant": "burnedTokensReceiver is never zero during use",
+    "expression": "burnedTokensReceiver != address(0)"
+  },
+  {
+    "invariant": "replaceController only callable by current controller",
+    "expression": "msg.sender == controller"
+  },
+  {
+    "invariant": "New controller cannot be address(0)",
+    "expression": "new_controller != address(0)"
+  }
+]
+

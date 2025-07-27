@@ -1,0 +1,73 @@
+[
+  {
+    "invariant": "Total supply equals the sum of all balances",
+    "expression": "totalSupply == sum(balanceOf[x] for all x)",
+    "type": "safety",
+    "critical": true,
+    "violated_by": ["Incorrect minting/burning", "Transfer without proper balance update"]
+  },
+  {
+    "invariant": "Owner is the only one allowed to mint tokens",
+    "expression": "caller == owner when calling mintToken",
+    "type": "access control",
+    "critical": true,
+    "violated_by": ["Unauthorized minting"]
+  },
+  {
+    "invariant": "Owner is the only one allowed to freeze accounts",
+    "expression": "caller == owner when calling freezeAccount",
+    "type": "access control",
+    "critical": true,
+    "violated_by": ["Unauthorized freezing"]
+  },
+  {
+    "invariant": "Frozen accounts cannot send or receive tokens",
+    "expression": "!frozenAccount[_from] && !frozenAccount[_to] during _transfer",
+    "type": "functional",
+    "critical": true,
+    "violated_by": ["Frozen account performing transfer"]
+  },
+  {
+    "invariant": "User must have enough balance to transfer or burn tokens",
+    "expression": "balanceOf[_from] >= _value",
+    "type": "safety",
+    "critical": true,
+    "violated_by": ["Overdrawn balance"]
+  },
+  {
+    "invariant": "Transfers must not overflow receiver's balance",
+    "expression": "balanceOf[_to] + _value >= balanceOf[_to]",
+    "type": "safety",
+    "critical": true,
+    "violated_by": ["Integer overflow"]
+  },
+  {
+    "invariant": "Buying and selling uses correct price calculation",
+    "expression": "buy(): tokens == msg.value / buyPrice; sell(): ether == amount * sellPrice",
+    "type": "functional",
+    "critical": false,
+    "violated_by": ["Incorrect token pricing", "Incorrect Ether transfer"]
+  },
+  {
+    "invariant": "Contract has enough Ether to fulfill sell orders",
+    "expression": "address(this).balance >= amount * sellPrice",
+    "type": "safety",
+    "critical": true,
+    "violated_by": ["Sell order fails due to lack of liquidity"]
+  },
+  {
+    "invariant": "Allowance cannot be exceeded in transferFrom or burnFrom",
+    "expression": "_value <= allowance[_from][caller]",
+    "type": "authorization",
+    "critical": true,
+    "violated_by": ["Overuse of delegated spending"]
+  },
+  {
+    "invariant": "Balance updates in _transfer are symmetric and correct",
+    "expression": "assert(balanceOf[_from] + balanceOf[_to] == previousBalances)",
+    "type": "arithmetic consistency",
+    "critical": true,
+    "violated_by": ["Incorrect transfer logic"]
+  }
+]
+

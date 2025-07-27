@@ -1,0 +1,43 @@
+{
+  "VIX.sol": {
+    "vulnerabilities": ["Arithmetic", "Access Control", "ERC20 Compliance"],
+    "invariants": [
+      {
+        "description": "The total supply must remain constant throughout the contract lifecycle.",
+        "formal": "totalSupply() == 2000000000e18",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "A user's balance should never be negative after a transfer.",
+        "formal": "forall users: balances[user] >= 0",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "The sum of all user balances must not exceed the total supply.",
+        "formal": "sum(balances) <= totalSupply()",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "TransferFrom must not proceed if allowance is insufficient.",
+        "formal": "allowed[_from][msg.sender] >= _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "approve() can only set non-zero allowance if previous allowance is zero (to mitigate race conditions).",
+        "formal": "_value == 0 || allowed[msg.sender][_spender] == 0",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Only the deployer should hold the full token supply upon deployment.",
+        "formal": "balances[deployer] == totalSupply()",
+        "category": "Access Control"
+      },
+      {
+        "description": "Fallback function must not accept ETH transfers.",
+        "formal": "fallback() ⇒ revert",
+        "category": "External Calls"
+      }
+    ]
+  }
+}
+

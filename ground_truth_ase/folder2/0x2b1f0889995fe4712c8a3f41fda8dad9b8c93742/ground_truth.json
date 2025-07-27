@@ -1,0 +1,58 @@
+[
+  {
+    "name": "total_supply_consistency",
+    "description": "The total supply equals the sum of all balances across all accounts, minus burned tokens if applicable.",
+    "expression": "totalSupply == sum(balanceOf[all_accounts])"
+  },
+  {
+    "name": "non_negative_balances",
+    "description": "No account can have a negative balance.",
+    "expression": "forall a: balanceOf[a] >= 0"
+  },
+  {
+    "name": "non_negative_total_supply",
+    "description": "Total token supply must never be negative.",
+    "expression": "totalSupply >= 0"
+  },
+  {
+    "name": "allowance_bounds",
+    "description": "No allowance should be negative.",
+    "expression": "forall a1, a2: allowance[a1][a2] >= 0"
+  },
+  {
+    "name": "approve_safety_check",
+    "description": "approve only sets non-zero value if previous allowance was zero, or sets to zero directly.",
+    "expression": "approve(_spender, _value): _value == 0 || allowance[msg.sender][_spender] == 0"
+  },
+  {
+    "name": "transfer_preserves_total_balance",
+    "description": "A successful transfer does not change the total number of tokens.",
+    "expression": "_transfer: balanceOf[_from] + balanceOf[_to] == previousBalance"
+  },
+  {
+    "name": "no_transfer_to_zero_address",
+    "description": "Transfers must not be made to the zero address.",
+    "expression": "_transfer: _to != 0x0"
+  },
+  {
+    "name": "burn_reduces_total_supply",
+    "description": "Burning tokens reduces total supply by the burned amount.",
+    "expression": "burn: totalSupply == previousTotalSupply - _value"
+  },
+  {
+    "name": "burn_from_reduces_allowance_and_supply",
+    "description": "Burning from another address decreases both total supply and that address's allowance.",
+    "expression": "burnFrom: totalSupply == previousTotalSupply - _value && allowance[_from][msg.sender] == previousAllowance - _value"
+  },
+  {
+    "name": "transferFrom_requires_sufficient_allowance",
+    "description": "A transferFrom can only occur if the spender has sufficient allowance.",
+    "expression": "transferFrom: allowance[_from][msg.sender] >= _value"
+  },
+  {
+    "name": "constructor_initializes_balances_correctly",
+    "description": "The deployer receives the total supply at deployment.",
+    "expression": "constructor: balanceOf[msg.sender] == totalSupply"
+  }
+]
+

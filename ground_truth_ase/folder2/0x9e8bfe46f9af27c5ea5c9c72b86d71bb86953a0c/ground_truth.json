@@ -1,0 +1,47 @@
+[
+  {
+    "description": "Sum of all balances equals totalSupply",
+    "expression": "sum(balances[addr] for addr in all_addresses) == totalSupply_"
+  },
+  {
+    "description": "Transfer preserves totalSupply",
+    "expression": "before(totalSupply_) == after(totalSupply_)"
+  },
+  {
+    "description": "transfer does not allow overspending",
+    "expression": "_value <= balances[msg.sender]"
+  },
+  {
+    "description": "transferFrom does not allow overspending or over-allowance",
+    "expression": "_value <= balances[_from] && _value <= allowed[_from][msg.sender]"
+  },
+  {
+    "description": "approve sets allowance exactly",
+    "expression": "allowed[msg.sender][_spender] == _value"
+  },
+  {
+    "description": "increaseApproval increases allowance safely",
+    "expression": "allowed[msg.sender][_spender] == before(allowed[msg.sender][_spender]) + _addedValue"
+  },
+  {
+    "description": "decreaseApproval decreases allowance safely, clamping at zero",
+    "expression": "allowed[msg.sender][_spender] == max(0, before(allowed[msg.sender][_spender]) - _subtractedValue)"
+  },
+  {
+    "description": "No tokens can be transferred to the zero address",
+    "expression": "_to != 0x0"
+  },
+  {
+    "description": "No tokens can be transferred from the zero address",
+    "expression": "_from != 0x0"
+  },
+  {
+    "description": "Initial supply assigned entirely to contract creator",
+    "expression": "balances[creator] == INITIAL_SUPPLY"
+  },
+  {
+    "description": "totalSupply_ equals INITIAL_SUPPLY after deployment",
+    "expression": "totalSupply_ == INITIAL_SUPPLY"
+  }
+]
+

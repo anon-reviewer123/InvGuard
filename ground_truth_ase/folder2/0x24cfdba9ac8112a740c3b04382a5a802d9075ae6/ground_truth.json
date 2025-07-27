@@ -1,0 +1,67 @@
+[
+  {
+    "name": "totalSupply constant after construction",
+    "expression": "_totalSupply == 38350000 * 10**uint(decimals)"
+  },
+  {
+    "name": "balance of owner equals total supply at deployment",
+    "expression": "balances[owner] == _totalSupply"
+  },
+  {
+    "name": "sum of all balances equals total supply (ignoring burned tokens)",
+    "expression": "sum(balances[a] for all a) >= totalSupply()"
+  },
+  {
+    "name": "transfer preserves total tokens",
+    "expression": "pre(balances[msg.sender]) + pre(balances[to]) == post(balances[msg.sender]) + post(balances[to])"
+  },
+  {
+    "name": "transferFrom preserves total tokens",
+    "expression": "pre(balances[from]) + pre(balances[to]) == post(balances[from]) + post(balances[to])"
+  },
+  {
+    "name": "transferFrom reduces allowance",
+    "expression": "post(allowed[from][msg.sender]) == pre(allowed[from][msg.sender]) - tokens"
+  },
+  {
+    "name": "approve sets correct allowance",
+    "expression": "allowed[msg.sender][spender] == tokens"
+  },
+  {
+    "name": "approveAndCall sets correct allowance and calls fallback",
+    "expression": "allowed[msg.sender][spender] == tokens && ApproveAndCallFallBack(spender).receiveApproval was called"
+  },
+  {
+    "name": "owner can transfer ownership",
+    "expression": "if msg.sender == owner then newOwner = _newOwner"
+  },
+  {
+    "name": "only newOwner can accept ownership",
+    "expression": "if msg.sender == newOwner then owner == newOwner && newOwner == 0"
+  },
+  {
+    "name": "fallback function reverts on ETH send",
+    "expression": "if msg.value > 0 then revert()"
+  },
+  {
+    "name": "transferAnyERC20Token only callable by owner",
+    "expression": "require(msg.sender == owner)"
+  },
+  {
+    "name": "SafeMath: add result >= operands",
+    "expression": "a + b >= a"
+  },
+  {
+    "name": "SafeMath: sub result <= operands",
+    "expression": "require(b <= a)"
+  },
+  {
+    "name": "SafeMath: mul valid if a == 0 or result/a == b",
+    "expression": "require(a == 0 || a * b / a == b)"
+  },
+  {
+    "name": "SafeMath: div requires non-zero divisor",
+    "expression": "require(b > 0)"
+  }
+]
+

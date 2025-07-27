@@ -1,0 +1,70 @@
+{
+  "invariants": [
+    {
+      "name": "Total Supply Consistency",
+      "description": "Total supply should equal the sum of all balances across accounts.",
+      "expression": "totalSupply == sum(balanceOf[a] for all a in balanceOf)"
+    },
+    {
+      "name": "Initial Supply Distribution",
+      "description": "At deployment, the initial supply must be assigned to the contract deployer.",
+      "expression": "balanceOf[owner] == initialSupply at deployment"
+    },
+    {
+      "name": "Non-Negative Balances",
+      "description": "No address should ever have a negative token balance.",
+      "expression": "forall a: balanceOf[a] >= 0"
+    },
+    {
+      "name": "Allowance Validity",
+      "description": "An allowance must always be non-negative.",
+      "expression": "forall o, s: allowance[o][s] >= 0"
+    },
+    {
+      "name": "Frozen Accounts Cannot Send or Receive",
+      "description": "Frozen accounts should not be able to transfer or receive tokens.",
+      "expression": "if frozenAccount[a] == true then transfer(a, ...) == revert and transfer(..., a) == revert"
+    },
+    {
+      "name": "Locked Accounts Cannot Send or Receive",
+      "description": "Locked accounts cannot interact until their unlock time has passed.",
+      "expression": "if block.timestamp < unlockUnixTime[a] then transfer(a, ...) == revert and transfer(..., a) == revert"
+    },
+    {
+      "name": "Minting Disabled After Finish",
+      "description": "No minting can occur after mintingFinished is set to true.",
+      "expression": "if mintingFinished == true then mint(...) == revert"
+    },
+    {
+      "name": "Valid Burn Operations",
+      "description": "Burn amount must be less than or equal to balance of the burning address.",
+      "expression": "require(_unitAmount <= balanceOf[_from])"
+    },
+    {
+      "name": "Valid Transfers",
+      "description": "All transfers must preserve total token amount.",
+      "expression": "Before transfer: total == totalSupply; After transfer: total == totalSupply"
+    },
+    {
+      "name": "Valid Airdrops",
+      "description": "Airdrop sender must have at least total distribution amount.",
+      "expression": "balanceOf[sender] >= sum(airdrop amounts)"
+    },
+    {
+      "name": "AutoDistribute Requires Sufficient Owner Balance",
+      "description": "Owner must have at least distributeAmount tokens for auto distribution.",
+      "expression": "balanceOf[owner] >= distributeAmount"
+    },
+    {
+      "name": "Only Owner Can Mint or Burn",
+      "description": "Only the contract owner is allowed to mint or burn tokens.",
+      "expression": "require(msg.sender == owner) in mint(...) and burn(...)"
+    },
+    {
+      "name": "Only Owner Can Freeze or Lock",
+      "description": "Only the owner can lock or freeze accounts.",
+      "expression": "require(msg.sender == owner) in freezeAccounts(...) and lockupAccounts(...)"
+    }
+  ]
+}
+

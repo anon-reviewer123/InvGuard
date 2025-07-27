@@ -1,0 +1,53 @@
+[
+  {
+    "name": "TotalSupplyInvariant",
+    "description": "The total token supply must equal the sum of all balances excluding zero address",
+    "expression": "_totalSupply == sum(balances[a] for all a != 0x0)"
+  },
+  {
+    "name": "BalanceNonNegative",
+    "description": "No address should ever have a negative balance",
+    "expression": "for all a: balances[a] >= 0"
+  },
+  {
+    "name": "AllowanceNonNegative",
+    "description": "No allowance entry should be negative",
+    "expression": "for all a,b: allowed[a][b] >= 0"
+  },
+  {
+    "name": "ValidTransferConditions",
+    "description": "Transfers should only occur if sender has sufficient balance",
+    "expression": "if transfer(from, to, tokens): balances[from] >= tokens"
+  },
+  {
+    "name": "ValidTransferFromConditions",
+    "description": "transferFrom should only execute if balance and allowance are sufficient",
+    "expression": "if transferFrom(from, to, tokens): balances[from] >= tokens and allowed[from][msg.sender] >= tokens"
+  },
+  {
+    "name": "EmitTransferEvent",
+    "description": "Every transfer must emit a Transfer event with correct parameters",
+    "expression": "on transfer(from, to, tokens): emit Transfer(from, to, tokens)"
+  },
+  {
+    "name": "EmitApprovalEvent",
+    "description": "Every approve call must emit an Approval event",
+    "expression": "on approve(owner, spender, tokens): emit Approval(owner, spender, tokens)"
+  },
+  {
+    "name": "OwnershipTransferOnlyByOwner",
+    "description": "Only the current owner can initiate ownership transfer",
+    "expression": "transferOwnership can only be called by owner"
+  },
+  {
+    "name": "AcceptOwnershipRestricted",
+    "description": "Ownership can only be accepted by newOwner",
+    "expression": "acceptOwnership can only be called by newOwner"
+  },
+  {
+    "name": "NoEtherAccepted",
+    "description": "Contract should not accept any Ether",
+    "expression": "fallback(): revert()"
+  }
+]
+

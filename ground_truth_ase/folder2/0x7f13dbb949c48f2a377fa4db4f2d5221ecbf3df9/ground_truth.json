@@ -1,0 +1,123 @@
+[
+  {
+    "name": "OnlyOwnerCanTransferOwnership",
+    "condition": "only the current owner can call transferOwnership",
+    "expression": "msg.sender == _owner",
+    "scope": "Ownable"
+  },
+  {
+    "name": "NonZeroNewOwner",
+    "condition": "new owner must be non-zero address",
+    "expression": "newOwner != address(0)",
+    "scope": "_transferOwnership"
+  },
+  {
+    "name": "TotalSupplyEqualsSumOfBalances",
+    "condition": "Total supply is always equal to the sum of all balances",
+    "expression": "totalSupply == sum(_balances[address])",
+    "scope": "ERC20"
+  },
+  {
+    "name": "ValidTransferAmount",
+    "condition": "Cannot transfer more than balance",
+    "expression": "_balances[from] >= value",
+    "scope": "_transfer"
+  },
+  {
+    "name": "ValidBurnAmount",
+    "condition": "Cannot burn more than balance",
+    "expression": "_balances[account] >= value",
+    "scope": "_burn"
+  },
+  {
+    "name": "ValidAllowanceTransfer",
+    "condition": "Allowance must be sufficient for transferFrom",
+    "expression": "_allowed[from][msg.sender] >= value",
+    "scope": "transferFrom"
+  },
+  {
+    "name": "ValidGasPriceCheck",
+    "condition": "Transaction gas price must be below or equal to maxGasPrice",
+    "expression": "tx.gasprice <= maxGasPrice",
+    "scope": "validGasPrice"
+  },
+  {
+    "name": "ReserveNotNegativeAfterEvolution",
+    "condition": "Reserve must not underflow after evolution payout",
+    "expression": "reserve >= evolutionWeight",
+    "scope": "evolution"
+  },
+  {
+    "name": "ReserveConsistencyAfterMint",
+    "condition": "Reserve increases correctly with deposits during mint",
+    "expression": "reserve == old_reserve + msg.value",
+    "scope": "born"
+  },
+  {
+    "name": "ReserveConsistencyAfterBurn",
+    "condition": "Reserve decreases correctly with refunds during burn",
+    "expression": "reserve == old_reserve - refundAmount",
+    "scope": "died"
+  },
+  {
+    "name": "ZeroDepositYieldsZeroMint",
+    "condition": "Zero deposit results in zero tokens minted",
+    "expression": "_depositAmount == 0 => reward == 0",
+    "scope": "calculatePurchaseReturn"
+  },
+  {
+    "name": "ZeroSellYieldsZeroRefund",
+    "condition": "Zero burn results in zero refund",
+    "expression": "_sellAmount == 0 => refund == 0",
+    "scope": "calculateSaleReturn"
+  },
+  {
+    "name": "FullBurnReturnsAllReserve",
+    "condition": "Burning all tokens returns all reserve",
+    "expression": "_sellAmount == _supply => refund == _reserveBalance",
+    "scope": "calculateSaleReturn"
+  },
+  {
+    "name": "ValidPowerPrecondition",
+    "condition": "Power preconditions hold for valid base/log calculations",
+    "expression": "_baseN < MAX_NUM && _baseN >= _baseD",
+    "scope": "power"
+  },
+  {
+    "name": "ERC20ApprovalEmitsEvent",
+    "condition": "Every approval action emits an Approval event",
+    "expression": "emit Approval(owner, spender, value)",
+    "scope": "approve"
+  },
+  {
+    "name": "TransferEmitsEvent",
+    "condition": "Every transfer emits a Transfer event",
+    "expression": "emit Transfer(from, to, value)",
+    "scope": "_transfer"
+  },
+  {
+    "name": "MintEmitsTransferFromZero",
+    "condition": "Minting emits Transfer from address(0)",
+    "expression": "emit Transfer(address(0), account, value)",
+    "scope": "_mint"
+  },
+  {
+    "name": "BurnEmitsTransferToZero",
+    "condition": "Burning emits Transfer to address(0)",
+    "expression": "emit Transfer(account, address(0), value)",
+    "scope": "_burn"
+  },
+  {
+    "name": "MintingIncreasesTotalSupply",
+    "condition": "Minting increases totalSupply correctly",
+    "expression": "_totalSupply == old_totalSupply + value",
+    "scope": "_mint"
+  },
+  {
+    "name": "BurningDecreasesTotalSupply",
+    "condition": "Burning decreases totalSupply correctly",
+    "expression": "_totalSupply == old_totalSupply - value",
+    "scope": "_burn"
+  }
+]
+

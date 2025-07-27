@@ -1,0 +1,53 @@
+[
+  {
+    "name": "TotalSupplyConstantAfterInit",
+    "description": "Total supply must remain constant after contract construction (except for address(0) burns).",
+    "invariant": "_totalSupply == initialTotalSupply"
+  },
+  {
+    "name": "BalanceSumInvariant",
+    "description": "Sum of all balances (excluding address(0)) must be equal to _totalSupply.",
+    "invariant": "sum(balances[addr] for addr != address(0)) == _totalSupply"
+  },
+  {
+    "name": "NonNegativeBalances",
+    "description": "No account should have a negative balance.",
+    "invariant": "forall(addr) balances[addr] >= 0"
+  },
+  {
+    "name": "AllowanceBounds",
+    "description": "No allowance should be negative.",
+    "invariant": "forall(owner, spender) allowed[owner][spender] >= 0"
+  },
+  {
+    "name": "ValidTransferEffect",
+    "description": "On a successful transfer, sender's balance decreases and recipient's increases by the same amount.",
+    "invariant": "balances[msg.sender] == balances_before[msg.sender] - tokens && balances[to] == balances_before[to] + tokens"
+  },
+  {
+    "name": "ValidTransferFromEffect",
+    "description": "On a successful transferFrom, balances and allowance are updated accordingly.",
+    "invariant": "balances[from] == balances_before[from] - tokens && balances[to] == balances_before[to] + tokens && allowed[from][msg.sender] == allowed_before[from][msg.sender] - tokens"
+  },
+  {
+    "name": "ApproveSetsAllowance",
+    "description": "Calling approve sets the allowance exactly to the approved value.",
+    "invariant": "allowed[msg.sender][spender] == tokens"
+  },
+  {
+    "name": "OwnershipTransferCorrectness",
+    "description": "Ownership is transferred only after acceptOwnership is called by newOwner.",
+    "invariant": "owner != newOwner || msg.sender == newOwner"
+  },
+  {
+    "name": "NoETHFallback",
+    "description": "Contract should reject ETH sent to fallback function.",
+    "invariant": "fallback() => revert"
+  },
+  {
+    "name": "InitialBalanceAssignedToOwner",
+    "description": "Upon deployment, the full token supply is assigned to the owner.",
+    "invariant": "balances[owner] == _totalSupply at constructor"
+  }
+]
+

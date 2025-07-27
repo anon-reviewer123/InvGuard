@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Total Supply Consistency",
+    "invariant": "_totalSupply == sum(balances.values()) + balances[address(0)]",
+    "description": "The total supply should equal the sum of all individual account balances including the zero address (if any tokens are burned)."
+  },
+  {
+    "name": "Initial Supply Allocation",
+    "invariant": "balances['0x5d2AAbBEC131d2a9A549ed0790CB802d7e6EB675'] == 40000000000000000000000",
+    "description": "All tokens should initially be assigned to the owner account specified in the constructor."
+  },
+  {
+    "name": "Non-Negative Balances",
+    "invariant": "forall(address a, balances[a] >= 0)",
+    "description": "No address should ever have a negative token balance."
+  },
+  {
+    "name": "Non-Negative Allowances",
+    "invariant": "forall(address o, address s, allowed[o][s] >= 0)",
+    "description": "Allowances between owners and spenders must remain non-negative."
+  },
+  {
+    "name": "Allowance Usage Bound",
+    "invariant": "forall(address o, address s, used <= allowed[o][s])",
+    "description": "A spender cannot transfer more tokens than the approved allowance from the owner."
+  },
+  {
+    "name": "Transfer Balance Conservation",
+    "invariant": "before.balances[sender] + before.balances[receiver] == after.balances[sender] + after.balances[receiver]",
+    "description": "Token transfers must not create or destroy tokens."
+  },
+  {
+    "name": "TransferFrom Balance Conservation",
+    "invariant": "before.balances[from] + before.balances[to] == after.balances[from] + after.balances[to]",
+    "description": "The total of `from` and `to` balances must remain constant after transferFrom."
+  },
+  {
+    "name": "TransferFrom Allowance Decrease",
+    "invariant": "allowed[from][msg.sender] decreases by tokens transferred",
+    "description": "Calling transferFrom should reduce the spender's allowance by the transferred amount."
+  },
+  {
+    "name": "Zero Address Supply Omission",
+    "invariant": "totalSupply() == _totalSupply - balances[address(0)]",
+    "description": "The `totalSupply()` function excludes the zero address balance, treating it as burned."
+  },
+  {
+    "name": "Fallback Rejects ETH",
+    "invariant": "contract does not accept ETH transfers",
+    "description": "The fallback function always reverts, ensuring no ETH can be sent to the contract."
+  }
+]
+

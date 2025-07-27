@@ -1,0 +1,63 @@
+[
+  {
+    "name": "TotalSupplyInvariant",
+    "description": "The sum of all account balances must equal the totalSupply at all times (unless tokens are burned).",
+    "expression": "sum(balances) + burned == totalSupply_",
+    "scope": "global"
+  },
+  {
+    "name": "NonNegativeBalance",
+    "description": "No account can have a negative balance.",
+    "expression": "forall(address a: balances[a] >= 0)",
+    "scope": "balances"
+  },
+  {
+    "name": "NoTransfersWhenPaused",
+    "description": "Transfers, approvals, and burns must not succeed while paused.",
+    "expression": "paused => transfer/approve/transferFrom/burn fail",
+    "scope": "transfer functions"
+  },
+  {
+    "name": "ValidAllowanceInvariant",
+    "description": "Allowance for a spender should always be between 0 and owner's balance.",
+    "expression": "forall(address o, address s: allowed[o][s] <= balances[o])",
+    "scope": "allowed"
+  },
+  {
+    "name": "OnlyOwnerCanPauseUnpause",
+    "description": "Only the owner can pause or unpause the contract.",
+    "expression": "caller(pause/unpause) == owner",
+    "scope": "ownership"
+  },
+  {
+    "name": "BurnReducesBalanceAndSupply",
+    "description": "Burning tokens should reduce both the user's balance and total supply by the same amount.",
+    "expression": "burn(_value): balances[msg.sender] -= _value && totalSupply_ -= _value",
+    "scope": "burn"
+  },
+  {
+    "name": "InitialSupplyAssignedToDeployer",
+    "description": "The initial total supply is assigned to the deployer on construction.",
+    "expression": "constructor: balances[msg.sender] == totalSupply_ && totalSupply_ == INITIAL_SUPPLY * 10^decimals",
+    "scope": "constructor"
+  },
+  {
+    "name": "ZeroAddressTransferProhibited",
+    "description": "Tokens cannot be transferred to the zero address.",
+    "expression": "_to != address(0)",
+    "scope": "transfer, transferFrom"
+  },
+  {
+    "name": "ApproveRaceConditionGuard",
+    "description": "Changing non-zero allowance requires setting to 0 first.",
+    "expression": "_value == 0 || allowed[msg.sender][_spender] == 0",
+    "scope": "approve"
+  },
+  {
+    "name": "FallbackFunctionReverts",
+    "description": "Fallback function must always revert.",
+    "expression": "fallback(): revert()",
+    "scope": "fallback"
+  }
+]
+

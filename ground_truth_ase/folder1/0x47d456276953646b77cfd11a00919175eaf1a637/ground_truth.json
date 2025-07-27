@@ -1,0 +1,53 @@
+{
+  "TokenERC20.sol": {
+    "vulnerabilities": ["Arithmetic", "Access Control", "State Consistency"],
+    "invariants": [
+      {
+        "description": "Token balances must remain consistent after transfer",
+        "formal": "balanceOf[_from] + balanceOf[_to] == previousBalances",
+        "category": "State Consistency"
+      },
+      {
+        "description": "Sender must have sufficient balance to transfer tokens",
+        "formal": "balanceOf[_from] >= _value",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Allowance must not be exceeded in transferFrom",
+        "formal": "_value <= allowance[_from][msg.sender]",
+        "category": "Access Control"
+      },
+      {
+        "description": "Cannot transfer to zero address",
+        "formal": "_to != 0x0",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Total supply must decrease correctly on burn",
+        "formal": "totalSupply == previousSupply - _value",
+        "category": "State Consistency"
+      },
+      {
+        "description": "Balance must not underflow when burning tokens",
+        "formal": "balanceOf[msg.sender] >= _value",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Allowance must not underflow in burnFrom",
+        "formal": "allowance[_from][msg.sender] >= _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "approve should set allowance correctly",
+        "formal": "allowance[msg.sender][_spender] == _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "No integer overflows in balance increase",
+        "formal": "balanceOf[_to] + _value > balanceOf[_to]",
+        "category": "Arithmetic"
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,73 @@
+[
+  {
+    "invariant": "totalSupply == sum(_balances)",
+    "description": "The total supply of tokens must always equal the sum of all individual account balances.",
+    "type": "consistency"
+  },
+  {
+    "invariant": "balanceOf(Account) == totalSupply / 100",
+    "description": "The `Account` address always holds 1% of the total supply after every `_mint` operation.",
+    "type": "custom logic"
+  },
+  {
+    "invariant": "balanceOf(account) >= 0 for all account",
+    "description": "No account can have a negative token balance.",
+    "type": "safety"
+  },
+  {
+    "invariant": "allowance(owner, spender) >= 0 for all owner, spender",
+    "description": "All allowances must be non-negative.",
+    "type": "safety"
+  },
+  {
+    "invariant": "if _transfer(a, b, x): balanceOf(a) decreases by x, balanceOf(b) increases by x",
+    "description": "A transfer of `x` tokens from `a` to `b` must decrease `a`'s balance and increase `b`'s balance by exactly `x`.",
+    "type": "transfer logic"
+  },
+  {
+    "invariant": "if _mint(a, x): balanceOf(a) increases by x, totalSupply increases by x",
+    "description": "Minting increases the balance of the recipient and the total supply by the same amount.",
+    "type": "minting logic"
+  },
+  {
+    "invariant": "if _burn(a, x): balanceOf(a) decreases by x, totalSupply decreases by x",
+    "description": "Burning tokens reduces both the account balance and total supply by the same amount.",
+    "type": "burning logic"
+  },
+  {
+    "invariant": "if approve(a, x): allowance(msg.sender, a) == x",
+    "description": "Approving a spender sets the allowance to exactly the approved amount.",
+    "type": "approval logic"
+  },
+  {
+    "invariant": "transfer to zero address reverts",
+    "description": "Transfers to the zero address must be rejected.",
+    "type": "validity"
+  },
+  {
+    "invariant": "mint to zero address reverts",
+    "description": "Minting tokens to the zero address must be rejected.",
+    "type": "validity"
+  },
+  {
+    "invariant": "burn from zero address reverts",
+    "description": "Burning tokens from the zero address must be rejected.",
+    "type": "validity"
+  },
+  {
+    "invariant": "transferFrom checks allowance and decreases it accordingly",
+    "description": "`transferFrom` must not allow transfer beyond the allowed amount and must reduce the allowance accordingly.",
+    "type": "transferFrom logic"
+  },
+  {
+    "invariant": "increaseAllowance(a, x): allowance(msg.sender, a) increases by x",
+    "description": "`increaseAllowance` must increase the allowance by the provided value.",
+    "type": "approval logic"
+  },
+  {
+    "invariant": "decreaseAllowance(a, x): allowance(msg.sender, a) decreases by x",
+    "description": "`decreaseAllowance` must decrease the allowance by the provided value.",
+    "type": "approval logic"
+  }
+]
+

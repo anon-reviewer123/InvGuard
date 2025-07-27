@@ -1,0 +1,52 @@
+{
+  "TokenFactory.sol": {
+    "vulnerabilities": [
+      "Arithmetic Overflow/Underflow",
+      "Access Control",
+      "ERC20 Semantic Violations"
+    ],
+    "invariants": [
+      {
+        "description": "User's token balance must never be negative.",
+        "formal": "forall addr in addresses: balances[addr] >= 0",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Total token supply must equal the sum of all user balances.",
+        "formal": "sum(balances) == totalSupply",
+        "category": "ERC20"
+      },
+      {
+        "description": "Allowance should not be decreased below 0.",
+        "formal": "forall (owner, spender): allowed[owner][spender] >= 0",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Only the creator should receive the initial supply upon deployment.",
+        "formal": "balances[creator] == totalSupply at constructor",
+        "category": "Access Control"
+      },
+      {
+        "description": "Transfers must only happen if sender has sufficient balance.",
+        "formal": "balances[msg.sender] >= value before transfer()",
+        "category": "ERC20"
+      },
+      {
+        "description": "Transfers via transferFrom must not exceed allowed amount.",
+        "formal": "allowed[from][msg.sender] >= value before transferFrom()",
+        "category": "ERC20"
+      },
+      {
+        "description": "The approve function should only be called with zero value or after resetting allowance to zero.",
+        "formal": "allowed[msg.sender][spender] == 0 || value == 0 before approve()",
+        "category": "ERC20"
+      },
+      {
+        "description": "No overflow should occur in addition or subtraction of balances or allowances.",
+        "formal": "SafeMath used in all arithmetic operations on balances and allowances",
+        "category": "Arithmetic"
+      }
+    ]
+  }
+}
+

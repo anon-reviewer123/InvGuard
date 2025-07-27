@@ -1,0 +1,53 @@
+{
+  "SOLVE.sol": {
+    "contract_name": "SOLVE",
+    "vulnerabilities": [
+      "Arithmetic Overflow/Underflow",
+      "Access Control",
+      "ERC20 Approval Race Condition"
+    ],
+    "invariants": [
+      {
+        "description": "Token transfers must not exceed sender's balance",
+        "formal": "require(_value <= balances[msg.sender])",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Total supply should always equal the sum of all user balances",
+        "formal": "totalSupply == Σ balances[address]",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Receiver address must not be zero in transfer and transferFrom",
+        "formal": "require(_to != address(0))",
+        "category": "Access Control"
+      },
+      {
+        "description": "Only token owner can approve spender allowances",
+        "formal": "msg.sender sets allowed[msg.sender][_spender]",
+        "category": "Access Control"
+      },
+      {
+        "description": "Allowance modification must follow 'reset-to-zero' before setting new value",
+        "formal": "require(_value == 0 || allowed[msg.sender][_spender] == 0)",
+        "category": "ERC20 Approval Race Condition"
+      },
+      {
+        "description": "All SafeMath operations must not overflow or underflow",
+        "formal": "∀ op ∈ {add, sub, mul, div}: assert(postcondition holds)",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Initial supply must be assigned entirely to contract deployer",
+        "formal": "balances[deployer] == INITIAL_SUPPLY",
+        "category": "Initialization"
+      },
+      {
+        "description": "Only the deployer should perform the initial mint",
+        "formal": "constructor() assigns totalSupply only once",
+        "category": "Initialization"
+      }
+    ]
+  }
+}
+

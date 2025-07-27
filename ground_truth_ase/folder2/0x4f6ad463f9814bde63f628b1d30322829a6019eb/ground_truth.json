@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Total Supply Invariant",
+    "description": "The sum of all balances should always equal totalSupply.",
+    "expression": "sum(balances[addr] for addr in addresses) == totalSupply"
+  },
+  {
+    "name": "Non-negative Balances",
+    "description": "No account should have a negative balance.",
+    "expression": "forall addr in addresses: balances[addr] >= 0"
+  },
+  {
+    "name": "Transfer Conservation",
+    "description": "Transfers do not create or destroy tokens.",
+    "expression": "balances[sender] + balances[recipient] before == balances[sender] + balances[recipient] after"
+  },
+  {
+    "name": "TransferFrom Conservation",
+    "description": "transferFrom also conserves total balances and updates allowances correctly.",
+    "expression": "balances[from] + balances[to] before == balances[from] + balances[to] after && allowed[from][spender] after == allowed[from][spender] before - value"
+  },
+  {
+    "name": "Allowance Non-negative",
+    "description": "Allowance values should not be negative.",
+    "expression": "forall owner in addresses, spender in addresses: allowed[owner][spender] >= 0"
+  },
+  {
+    "name": "Allowance Limit Enforcement",
+    "description": "Spenders cannot transfer more than their approved allowance.",
+    "expression": "require(value <= allowed[from][spender])"
+  },
+  {
+    "name": "Owner Balance on Deployment",
+    "description": "Upon deployment, the entire supply is assigned to the contract owner.",
+    "expression": "balances[owner] == totalSupply"
+  },
+  {
+    "name": "Symbol Non-empty",
+    "description": "Token symbol must be a non-empty string.",
+    "expression": "len(symbol) > 0"
+  },
+  {
+    "name": "Name Non-empty",
+    "description": "Token name must be a non-empty string.",
+    "expression": "len(name) > 0"
+  },
+  {
+    "name": "Decimals Validity",
+    "description": "Decimals should be a reasonable non-negative integer.",
+    "expression": "decimals >= 0 && decimals <= 77"
+  }
+]
+

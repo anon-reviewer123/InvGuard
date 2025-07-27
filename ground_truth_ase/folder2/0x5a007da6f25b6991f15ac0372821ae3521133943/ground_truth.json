@@ -1,0 +1,23 @@
+[
+  {
+    "invariant": "_totalSupply == sum(_updatedBalance[address]) over all addresses",
+    "description": "Total supply of tokens must equal the sum of all individual balances."
+  },
+  {
+    "invariant": "blacklist[address] == 1 => address cannot call transfer or transferFrom",
+    "description": "Blacklisted addresses are restricted from transferring tokens."
+  },
+  {
+    "invariant": "EnableFee in {0, 1}",
+    "description": "Transaction fee flag must be binary."
+  },
+  {
+    "invariant": "EnableReb in {0, 1}",
+    "description": "Rebalancing enable flag must be binary."
+  },
+  {
+    "invariant": "Collector != address(0) when EnableFee == 1",
+    "description": "A valid collector address must be set before enabling fees."
+  }
+]
+

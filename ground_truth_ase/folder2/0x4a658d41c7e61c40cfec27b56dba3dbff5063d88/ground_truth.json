@@ -1,0 +1,52 @@
+{
+  "Token": {
+    "totalSupply_ <= TOTALSUPPLY": true,
+    "balances[address] >= 0": true,
+    "totalSupply_ == sum(balances.values())": true,
+    "mintingFinished => no further minting is allowed": true,
+    "paused == true at deployment": true,
+    "onlyOwner can mint or finishMinting": true,
+    "pause() always reverts": true,
+    "unpause() callable only by owner, only when paused": true
+  },
+  "Access Control": {
+    "onlyOwner functions": [
+      "mint",
+      "finishMinting",
+      "unpause",
+      "transferOwnership",
+      "setPrimaryOperator",
+      "setSecondaryOperator",
+      "airdrop"
+    ],
+    "canOperate functions": [
+      "emergencyERC20Drain"
+    ]
+  },
+  "ERC20 Semantics": {
+    "transfer: balances[msg.sender] >= _value": true,
+    "transfer: _to != 0": true,
+    "transferFrom: allowed[_from][msg.sender] >= _value": true,
+    "approve: sets exact amount": true,
+    "increaseApproval: increases from current allowance": true,
+    "decreaseApproval: floors at 0": true
+  },
+  "Airdrop": {
+    "dests.length == values.length": true,
+    "for all i: balances[bountyWallet] >= values[i] before transfer": true,
+    "transfers use transferFrom and respect allowance": true
+  },
+  "Salvage": {
+    "emergencyERC20Drain: only owner or operators can call": true,
+    "drains tokens or ETH to owner": true
+  },
+  "Constructor": {
+    "SencToken: paused == true": true,
+    "Operatable: primaryOperator == owner && secondaryOperator == owner": true
+  },
+  "Failure Cases": {
+    "pause() always reverts": true,
+    "mint: reverts if totalSupply_ + _amount > TOTALSUPPLY": true
+  }
+}
+

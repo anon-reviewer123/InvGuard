@@ -1,0 +1,59 @@
+[
+  {
+    "invariant": "_totalSupply == sum(balances.values())",
+    "description": "The total supply must always equal the sum of all token holder balances."
+  },
+  {
+    "invariant": "_totalSupply <= 2100000 ether",
+    "description": "Total supply must never exceed the max cap of 2,100,000 ETF tokens."
+  },
+  {
+    "invariant": "balances[address(0)] == 0",
+    "description": "Zero address should never hold any tokens."
+  },
+  {
+    "invariant": "forall a in balances: balances[a] >= 0",
+    "description": "No account should ever have a negative balance."
+  },
+  {
+    "invariant": "forall a in allowed: forall s in allowed[a]: allowed[a][s] >= 0",
+    "description": "All allowance values must be non-negative."
+  },
+  {
+    "invariant": "mintable == address(0) || mintable != address(0)",
+    "description": "The 'mintable' address must be either the zero address or a valid non-zero address set by the owner."
+  },
+  {
+    "invariant": "msg.sender == owner => can call mint() or setMintAble()",
+    "description": "Only the owner can mint tokens directly or assign minting rights."
+  },
+  {
+    "invariant": "msg.sender == mintable => can call mintByETF()",
+    "description": "Only the address stored in 'mintable' can call mintByETF()."
+  },
+  {
+    "invariant": "transfer(from, to, tokens) => balances[from] >= tokens",
+    "description": "Transfers must not allow sending more tokens than the sender holds."
+  },
+  {
+    "invariant": "transferFrom(from, to, tokens) => allowed[from][msg.sender] >= tokens",
+    "description": "Delegated transfers must not exceed the approved allowance."
+  },
+  {
+    "invariant": "approve(spender, tokens) => allowed[msg.sender][spender] == tokens",
+    "description": "Calling approve should update the allowance to the specified amount."
+  },
+  {
+    "invariant": "approveAndCall(spender, tokens, data) => spender must implement receiveApproval",
+    "description": "Spender contracts used with approveAndCall must support the receiveApproval function."
+  },
+  {
+    "invariant": "Fallback function => always reverts on ETH receipt",
+    "description": "Contract does not accept ETH; any attempt to send ETH should revert."
+  },
+  {
+    "invariant": "onlyOwner => can call transferAnyERC20Token",
+    "description": "Only the contract owner can recover ERC20 tokens sent to this contract."
+  }
+]
+

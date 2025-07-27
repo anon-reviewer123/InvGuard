@@ -1,0 +1,43 @@
+{
+  "PubeCoin.sol": {
+    "vulnerabilities": ["Arithmetic", "Access Control", "Token Semantics"],
+    "invariants": [
+      {
+        "description": "Total token supply must equal the sum of all user balances plus burned tokens (i.e., balance at address(0))",
+        "formal": "totalSupply() == _totalSupply - balances[address(0)]",
+        "category": "Token Semantics"
+      },
+      {
+        "description": "Sender must have sufficient balance before transfer",
+        "formal": "balances[msg.sender] >= tokens",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Sender must have sufficient allowance before transferFrom",
+        "formal": "allowed[from][msg.sender] >= tokens",
+        "category": "Access Control"
+      },
+      {
+        "description": "No integer underflow or overflow in balance updates during transfer",
+        "formal": "safeSub(balances[msg.sender], tokens) >= 0 && safeAdd(balances[to], tokens) >= balances[to]",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "No integer underflow in allowance reduction during transferFrom",
+        "formal": "safeSub(allowed[from][msg.sender], tokens) >= 0",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Transfer emits a Transfer event",
+        "formal": "emit Transfer(sender, recipient, tokens) must occur",
+        "category": "Token Semantics"
+      },
+      {
+        "description": "Approval emits an Approval event",
+        "formal": "emit Approval(owner, spender, tokens) must occur",
+        "category": "Token Semantics"
+      }
+    ]
+  }
+}
+

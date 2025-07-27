@@ -1,0 +1,131 @@
+{
+  "global": [
+    {
+      "name": "Total Supply Is Sum of Balances",
+      "invariant": "totalSupply_ == sum(balances[address])"
+    },
+    {
+      "name": "No Overflow in Balance",
+      "invariant": "balances[address] <= totalSupply_"
+    },
+    {
+      "name": "Only Owner Can Mint or Burn",
+      "invariant": "only owner can call mint() or burnAdminAmount()"
+    },
+    {
+      "name": "Minting Disabled When Finished",
+      "invariant": "mintingFinished == true => no minting allowed"
+    },
+    {
+      "name": "No Transfers While Paused",
+      "invariant": "paused == true => no transfer(), transferFrom(), approve(), increaseApproval(), decreaseApproval()"
+    },
+    {
+      "name": "Blacklist Enforcement",
+      "invariant": "blackList[msg.sender] == true => cannot call transfer(), transferFrom(), approve()"
+    },
+    {
+      "name": "Ownership Transfer Valid",
+      "invariant": "new owner != 0x0"
+    },
+    {
+      "name": "Operator Transfer Valid",
+      "invariant": "new operator != 0x0"
+    }
+  ],
+  "transfer": [
+    {
+      "name": "Transfer Reduces Sender Balance",
+      "invariant": "balances[msg.sender] = balances[msg.sender] - _value"
+    },
+    {
+      "name": "Transfer Increases Receiver Balance",
+      "invariant": "balances[_to] = balances[_to] + _value"
+    },
+    {
+      "name": "Transfer Value Check",
+      "invariant": "_value <= balances[msg.sender]"
+    },
+    {
+      "name": "Transfer To Non-Zero Address",
+      "invariant": "_to != address(0)"
+    }
+  ],
+  "transferFrom": [
+    {
+      "name": "Allowance Check",
+      "invariant": "_value <= allowed[_from][msg.sender]"
+    },
+    {
+      "name": "Transfer From Balance Check",
+      "invariant": "_value <= balances[_from]"
+    },
+    {
+      "name": "Receiver and Sender Not Blacklisted",
+      "invariant": "blackList[_from] == false && blackList[_to] == false"
+    }
+  ],
+  "mint": [
+    {
+      "name": "Mint Increases Total Supply",
+      "invariant": "totalSupply_ = totalSupply_ + _amount"
+    },
+    {
+      "name": "Mint Increases Receiver Balance",
+      "invariant": "balances[_to] = balances[_to] + _amount"
+    },
+    {
+      "name": "Only Mint When Not Finished",
+      "invariant": "mintingFinished == false"
+    }
+  ],
+  "burn": [
+    {
+      "name": "Burn Decreases Total Supply",
+      "invariant": "totalSupply_ = totalSupply_ - _value"
+    },
+    {
+      "name": "Burn Decreases Sender Balance",
+      "invariant": "balances[msg.sender] = balances[msg.sender] - _value"
+    },
+    {
+      "name": "Burn Value Check",
+      "invariant": "_value <= balances[msg.sender]"
+    }
+  ],
+  "multiTransfer": [
+    {
+      "name": "Sum of Transfer Amounts <= Sender Balance",
+      "invariant": "sum(_amount) <= balances[msg.sender]"
+    },
+    {
+      "name": "Addresses and Amounts Match",
+      "invariant": "_to.length == _amount.length"
+    },
+    {
+      "name": "No Zero Address In Transfers",
+      "invariant": "∀ i ∈ [0, _to.length): _to[i] != address(0)"
+    }
+  ],
+  "blacklist": [
+    {
+      "name": "Cannot Lock Owner Address",
+      "invariant": "_lockAddress != owner"
+    },
+    {
+      "name": "Lock Only Unlocked Address",
+      "invariant": "blackList[_lockAddress] == false"
+    },
+    {
+      "name": "Unlock Only Locked Address",
+      "invariant": "blackList[_unlockAddress] == true"
+    }
+  ],
+  "approve": [
+    {
+      "name": "Approval Sets Allowance",
+      "invariant": "allowed[msg.sender][_spender] == _value"
+    }
+  ]
+}
+

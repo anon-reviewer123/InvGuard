@@ -1,0 +1,43 @@
+[
+  {
+    "invariant": "Total token supply must equal the sum of all balances (excluding burned tokens)",
+    "expression": "_totalSupply == sum(balances) + balances[address(0)]"
+  },
+  {
+    "invariant": "No address should hold a negative balance",
+    "expression": "forall addr in balances: balances[addr] >= 0"
+  },
+  {
+    "invariant": "No allowance should be negative",
+    "expression": "forall owner in allowed: forall spender in allowed[owner]: allowed[owner][spender] >= 0"
+  },
+  {
+    "invariant": "Total supply must always equal 2,100,000 at contract deployment",
+    "expression": "_totalSupply == 2100000"
+  },
+  {
+    "invariant": "Initial supply must be assigned to owner",
+    "expression": "balances[0xb28F6eE25d688f3946De6e597883e20e549DecB7] == _totalSupply"
+  },
+  {
+    "invariant": "Transfer emits Transfer event with correct parameters",
+    "expression": "on transfer(from, to, tokens): emit Transfer(from, to, tokens)"
+  },
+  {
+    "invariant": "Approve emits Approval event with correct parameters",
+    "expression": "on approve(owner, spender, tokens): emit Approval(owner, spender, tokens)"
+  },
+  {
+    "invariant": "Only spender can spend within the allowed amount",
+    "expression": "allowed[from][spender] >= tokens implies transferFrom(from, to, tokens) is allowed"
+  },
+  {
+    "invariant": "0-value transfers must still emit Transfer event and not affect balances",
+    "expression": "if tokens == 0 then transfer emits event and balances unchanged"
+  },
+  {
+    "invariant": "Fallback function must always revert",
+    "expression": "receive ETH => revert()"
+  }
+]
+

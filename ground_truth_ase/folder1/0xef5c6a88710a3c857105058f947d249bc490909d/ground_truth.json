@@ -1,0 +1,70 @@
+{
+  "invariants": [
+    {
+      "name": "Total supply equals sum of balances",
+      "expression": "totalSupply == sum(balances[addr] for addr in allAddresses)",
+      "description": "The total token supply must always equal the sum of all individual account balances."
+    },
+    {
+      "name": "Non-negative balances",
+      "expression": "for all addr: balances[addr] >= 0",
+      "description": "No account should have a negative balance at any point."
+    },
+    {
+      "name": "Non-negative allowances",
+      "expression": "for all owner, spender: allowed[owner][spender] >= 0",
+      "description": "No allowance entry should ever be negative."
+    },
+    {
+      "name": "Allowance consistency after approve",
+      "expression": "approve(x, y) can only set a new value if allowed[msg.sender][x] == 0 or y == 0",
+      "description": "To avoid the ERC20 approval race condition, approval must reset to 0 before changing."
+    },
+    {
+      "name": "Transfer conservation",
+      "expression": "before.balances[from] + before.balances[to] == after.balances[from] + after.balances[to]",
+      "description": "The combined balances of sender and recipient should remain unchanged after a transfer."
+    },
+    {
+      "name": "TransferFrom conservation",
+      "expression": "before.balances[from] + before.balances[to] == after.balances[from] + after.balances[to]",
+      "description": "Same conservation rule applies to `transferFrom`, in addition to reducing allowance."
+    },
+    {
+      "name": "Minting increases total supply and target balance",
+      "expression": "after.totalSupply == before.totalSupply + value && after.balances[account] == before.balances[account] + value",
+      "description": "Minting should increase both the total supply and the account balance by the minted amount."
+    },
+    {
+      "name": "Burning decreases total supply and target balance",
+      "expression": "after.totalSupply == before.totalSupply - value && after.balances[account] == before.balances[account] - value",
+      "description": "Burning should decrease both the total supply and the account balance by the burned amount."
+    },
+    {
+      "name": "Only owner can mint or burn",
+      "expression": "msg.sender == owner for mint/burn",
+      "description": "Only the contract owner may mint or burn tokens."
+    },
+    {
+      "name": "Payload size matches expected",
+      "expression": "msg.data.length >= 4 + 32 * N",
+      "description": "Transfers and approvals must validate payload size to prevent short address attacks."
+    },
+    {
+      "name": "Valid mint/burn amount",
+      "expression": "value > 0",
+      "description": "Mint or burn value must be strictly positive."
+    },
+    {
+      "name": "Owner update integrity",
+      "expression": "owner != 0x0 after transfer unless explicitly renounced",
+      "description": "Owner should never be set to zero address except through deliberate renouncement."
+    },
+    {
+      "name": "Event emission on state change",
+      "expression": "Transfer/Approval events are emitted when corresponding state changes occur",
+      "description": "Events must be emitted when tokens are transferred or approvals change."
+    }
+  ]
+}
+

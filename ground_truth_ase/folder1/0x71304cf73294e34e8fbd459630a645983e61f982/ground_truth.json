@@ -1,0 +1,51 @@
+[
+  {
+    "invariant": "Total supply is fixed at initialization",
+    "assertion": "totalSupply == 1000000000 * 10 ** 18"
+  },
+  {
+    "invariant": "Total supply equals sum of all balances",
+    "assertion": "sum(balances.values()) == totalSupply"
+  },
+  {
+    "invariant": "No transfer to zero address",
+    "assertion": "_to != address(0)"
+  },
+  {
+    "invariant": "Sender must have sufficient balance for transfer",
+    "assertion": "balances[msg.sender] >= _value"
+  },
+  {
+    "invariant": "Balance subtraction and addition in transfer must preserve total tokens",
+    "assertion": "before_balance_sender - _value == after_balance_sender && before_balance_recipient + _value == after_balance_recipient"
+  },
+  {
+    "invariant": "Allowance must not be exceeded in transferFrom",
+    "assertion": "allowed[_from][msg.sender] >= _value"
+  },
+  {
+    "invariant": "Approval race condition mitigation enforced",
+    "assertion": "_value == 0 || allowed[msg.sender][_spender] == 0"
+  },
+  {
+    "invariant": "approve() correctly updates allowance mapping",
+    "assertion": "allowed[msg.sender][_spender] == _value"
+  },
+  {
+    "invariant": "SafeMath prevents overflow and underflow",
+    "assertion": "All arithmetic operations use SafeMath functions"
+  },
+  {
+    "invariant": "Initial supply is fully assigned to contract deployer",
+    "assertion": "balances[deployer] == totalSupply"
+  },
+  {
+    "invariant": "Transfer event emitted correctly",
+    "assertion": "Transfer event logs correct _from, _to, _value"
+  },
+  {
+    "invariant": "Approval event emitted correctly",
+    "assertion": "Approval event logs correct owner, spender, value"
+  }
+]
+

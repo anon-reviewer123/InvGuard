@@ -1,0 +1,53 @@
+[
+  {
+    "name": "total_supply_equals_sum_of_balances_plus_burned",
+    "expression": "_totalSupply == totalSupply() + balances[address(0)]",
+    "description": "The declared _totalSupply should equal the effective circulating supply plus the burned tokens at address(0)."
+  },
+  {
+    "name": "sum_of_balances_less_or_equal_totalSupply",
+    "expression": "sum(balances) <= _totalSupply",
+    "description": "The sum of all account balances should never exceed the total supply."
+  },
+  {
+    "name": "non_negative_balances",
+    "expression": "forall(account in balances): balances[account] >= 0",
+    "description": "No account should have a negative token balance."
+  },
+  {
+    "name": "non_negative_allowances",
+    "expression": "forall(owner in allowed): forall(spender in allowed[owner]): allowed[owner][spender] >= 0",
+    "description": "Allowances must always be non-negative values."
+  },
+  {
+    "name": "transfer_preserves_total_tokens",
+    "expression": "before(balances[msg.sender] + balances[to]) == after(balances[msg.sender] + balances[to])",
+    "description": "Token transfers should not alter the total number of tokens between sender and recipient."
+  },
+  {
+    "name": "transferFrom_respects_allowance",
+    "expression": "tokens <= allowed[from][msg.sender]",
+    "description": "transferFrom should never allow a spender to transfer more than their allowance."
+  },
+  {
+    "name": "approve_sets_exact_allowance",
+    "expression": "after(allowed[msg.sender][spender]) == tokens",
+    "description": "approve must set the spender's allowance to the specified amount."
+  },
+  {
+    "name": "initial_supply_assigned_to_creator",
+    "expression": "constructor: balances[msg.sender] == _totalSupply",
+    "description": "At deployment, the full initial supply must be assigned to the contract creator."
+  },
+  {
+    "name": "totalSupply_never_increases_or_decreases",
+    "expression": "invariant(_totalSupply == 100000000000000000000000)",
+    "description": "Total token supply should remain constant after contract creation."
+  },
+  {
+    "name": "events_emitted_on_state_changes",
+    "expression": "transfer or transferFrom emits Transfer, approve emits Approval",
+    "description": "Proper events must be emitted when state-changing actions occur."
+  }
+]
+

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "GTI-001",
+    "description": "Total supply is equal to the sum of all user balances",
+    "expression": "totalSupply == sum(balances[_] for all _ in addresses)"
+  },
+  {
+    "id": "GTI-002",
+    "description": "No user balance should be negative (SafeMath ensures this)",
+    "expression": "forall a in addresses: balances[a] >= 0"
+  },
+  {
+    "id": "GTI-003",
+    "description": "No allowance should be negative (SafeMath ensures this)",
+    "expression": "forall (o,s) in allowed: allowed[o][s] >= 0"
+  },
+  {
+    "id": "GTI-004",
+    "description": "Transfer should not change total supply",
+    "expression": "before(transfer) totalSupply == after(transfer) totalSupply"
+  },
+  {
+    "id": "GTI-005",
+    "description": "TransferFrom should not change total supply",
+    "expression": "before(transferFrom) totalSupply == after(transferFrom) totalSupply"
+  },
+  {
+    "id": "GTI-006",
+    "description": "Sender’s balance should decrease by the transferred amount",
+    "expression": "after(balances[msg.sender]) == before(balances[msg.sender]) - value"
+  },
+  {
+    "id": "GTI-007",
+    "description": "Receiver’s balance should increase by the transferred amount",
+    "expression": "after(balances[_to]) == before(balances[_to]) + value"
+  },
+  {
+    "id": "GTI-008",
+    "description": "Sender must have at least the transfer amount",
+    "expression": "balances[msg.sender] >= value"
+  },
+  {
+    "id": "GTI-009",
+    "description": "TransferFrom: sender must be approved for at least `_value`",
+    "expression": "allowed[_from][msg.sender] >= _value"
+  },
+  {
+    "id": "GTI-010",
+    "description": "Approve must either set to 0 or be called after allowance is zero",
+    "expression": "(_value == 0) || (allowed[msg.sender][_spender] == 0)"
+  },
+  {
+    "id": "GTI-011",
+    "description": "Initial supply must match the deployed totalSupply",
+    "expression": "totalSupply == INITIAL_SUPPLY"
+  },
+  {
+    "id": "GTI-012",
+    "description": "Deployer's balance must equal total supply after construction",
+    "expression": "balances[deployer] == totalSupply"
+  }
+]
+

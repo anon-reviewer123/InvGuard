@@ -1,0 +1,79 @@
+[
+  {
+    "component": "SafeMath",
+    "invariants": [
+      "mul(a, b) == a * b and (a == 0 || result / a == b)",
+      "div(a, b) == a / b and b != 0",
+      "sub(a, b) == a - b and b <= a",
+      "add(a, b) == a + b and result >= a"
+    ]
+  },
+  {
+    "component": "ERC20Basic",
+    "invariants": [
+      "totalSupply == sum(balances[addr] for addr in allAccounts)"
+    ]
+  },
+  {
+    "component": "BasicToken",
+    "invariants": [
+      "balances[msg.sender] >= _value before transfer",
+      "balances[msg.sender] == old_balance - _value after transfer",
+      "balances[_to] == old_balance + _value after transfer"
+    ]
+  },
+  {
+    "component": "StandardToken",
+    "invariants": [
+      "allowed[_from][msg.sender] >= _value before transferFrom",
+      "allowed[_from][msg.sender] == old_allowance - _value after transferFrom",
+      "approve(_spender, _value) is only allowed if value is 0 or current allowance is 0"
+    ]
+  },
+  {
+    "component": "Ownable",
+    "invariants": [
+      "only owner can call functions with onlyOwner modifier",
+      "owner != 0x0",
+      "ownership can be transferred to a non-zero address only"
+    ]
+  },
+  {
+    "component": "MintableToken",
+    "invariants": [
+      "mintingFinished == true prevents any minting",
+      "totalSupply == sum(balances[addr] for addr in allAccounts)",
+      "mint increases both totalSupply and recipient balance by _amount",
+      "only owner can mint"
+    ]
+  },
+  {
+    "component": "Pausable",
+    "invariants": [
+      "when paused, transfer and transferFrom revert",
+      "only owner can pause/unpause",
+      "paused == true only after pause is called",
+      "paused == false only after unpause is called"
+    ]
+  },
+  {
+    "component": "TokenTimelock",
+    "invariants": [
+      "tokens can only be claimed after releaseTime",
+      "only beneficiary can call claim",
+      "after claim, token.balanceOf(this) == 0"
+    ]
+  },
+  {
+    "component": "THBTToken",
+    "invariants": [
+      "name == 'THBTToken'",
+      "symbol == 'THBT'",
+      "decimals == 18",
+      "mintTimelocked creates a TokenTimelock and mints tokens to it",
+      "mintTimelocked returns address with balance == _amount",
+      "mintTimelocked ensures timelock.releaseTime > now"
+    ]
+  }
+]
+

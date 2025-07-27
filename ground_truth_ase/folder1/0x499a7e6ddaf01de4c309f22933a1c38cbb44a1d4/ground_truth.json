@@ -1,0 +1,55 @@
+[
+  {
+    "name": "totalSupplyEqualsSumOfAllBalances",
+    "expression": "_totalSupply == sum(balances[a] for a in all_addresses)"
+  },
+  {
+    "name": "balanceNeverNegative",
+    "expression": "forall(address a) => balances[a] >= 0"
+  },
+  {
+    "name": "allowanceNeverNegative",
+    "expression": "forall(address o, address s) => allowed[o][s] >= 0"
+  },
+  {
+    "name": "transferPreservesTotalSupply",
+    "expression": "pre_total == post_total where total = sum(balances[a] for a in all_addresses)"
+  },
+  {
+    "name": "transferMovesTokensCorrectly",
+    "expression": "if transfer(from, to, x): balances[from] decreases by x, balances[to] increases by x"
+  },
+  {
+    "name": "transferFromUpdatesAllowanceCorrectly",
+    "expression": "if transferFrom(owner, spender, x): allowed[owner][msg.sender] decreases by x"
+  },
+  {
+    "name": "approveSetsAllowance",
+    "expression": "approve(spender, x): allowed[msg.sender][spender] == x"
+  },
+  {
+    "name": "onlyInitialOwnerHasSupplyAtDeployment",
+    "expression": "at deployment: balances[0x4a1D652Dfb96eec4cF8b7245A278296d6FdE632A] == _totalSupply"
+  },
+  {
+    "name": "totalSupplyReflectsBurnedTokens",
+    "expression": "totalSupply() == _totalSupply - balances[address(0)]"
+  },
+  {
+    "name": "safeMathPreventsOverflowUnderflow",
+    "expression": "no arithmetic operation causes underflow or overflow"
+  },
+  {
+    "name": "zeroTransferAllowed",
+    "expression": "transfer(..., 0) and transferFrom(..., ..., 0) are allowed"
+  },
+  {
+    "name": "approveAndCallTriggersCallback",
+    "expression": "approveAndCall calls receiveApproval on spender contract"
+  },
+  {
+    "name": "fallbackReverts",
+    "expression": "ether sent to contract triggers revert()"
+  }
+]
+

@@ -1,0 +1,65 @@
+{
+  "invariants": [
+    {
+      "name": "TotalSupplyEqualsSumOfBalances",
+      "description": "The total token supply must equal the sum of all balances.",
+      "expression": "totalSupply == sum(balances[address]) for all address"
+    },
+    {
+      "name": "NonNegativeBalances",
+      "description": "All account balances must always be non-negative.",
+      "expression": "balances[address] >= 0 for all address"
+    },
+    {
+      "name": "NonNegativeAllowances",
+      "description": "Allowances must always be non-negative.",
+      "expression": "allowed[owner][spender] >= 0 for all owner, spender"
+    },
+    {
+      "name": "TransferValueNotExceedSenderBalance",
+      "description": "A user cannot transfer more tokens than their balance.",
+      "expression": "transfer(_to, _value) ⇒ balances[msg.sender] >= _value"
+    },
+    {
+      "name": "TransferFromRespectsAllowance",
+      "description": "A transferFrom call must not exceed the allowed amount.",
+      "expression": "transferFrom(_from, _to, _value) ⇒ allowed[_from][msg.sender] >= _value"
+    },
+    {
+      "name": "TransferFromRespectsBalance",
+      "description": "A transferFrom call must not exceed the sender’s balance.",
+      "expression": "transferFrom(_from, _to, _value) ⇒ balances[_from] >= _value"
+    },
+    {
+      "name": "ApproveCorrectlySetsAllowance",
+      "description": "Calling approve sets the correct allowance value.",
+      "expression": "approve(_spender, _value) ⇒ allowed[msg.sender][_spender] == _value"
+    },
+    {
+      "name": "ApproveAndCallFollowsApproveSemantics",
+      "description": "approveAndCall must update allowance same as approve.",
+      "expression": "approveAndCall(_spender, _value, _extraData) ⇒ allowed[msg.sender][_spender] == _value"
+    },
+    {
+      "name": "TransferEmitsTransferEvent",
+      "description": "A successful transfer must emit the Transfer event.",
+      "expression": "transfer(_, _) ⇒ emits Transfer(msg.sender, _to, _value)"
+    },
+    {
+      "name": "TransferFromEmitsTransferEvent",
+      "description": "A successful transferFrom must emit the Transfer event.",
+      "expression": "transferFrom(_, _, _) ⇒ emits Transfer(_from, _to, _value)"
+    },
+    {
+      "name": "ApproveEmitsApprovalEvent",
+      "description": "Calling approve must emit the Approval event.",
+      "expression": "approve(_, _) ⇒ emits Approval(msg.sender, _spender, _value)"
+    },
+    {
+      "name": "NoEtherAccepted",
+      "description": "The contract should reject any incoming Ether.",
+      "expression": "fallback ⇒ reverts on msg.value > 0"
+    }
+  ]
+}
+

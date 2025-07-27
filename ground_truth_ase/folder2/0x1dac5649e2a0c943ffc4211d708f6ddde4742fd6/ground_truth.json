@@ -1,0 +1,63 @@
+[
+  {
+    "invariant": "Total token supply is equal to the sum of all balances.",
+    "expression": "totalSupply == sum(balances.values())",
+    "scope": "Token"
+  },
+  {
+    "invariant": "Owner has full balance at initialization.",
+    "expression": "balances[owner] == initialSupply",
+    "scope": "Token.constructor"
+  },
+  {
+    "invariant": "All token transfers reduce sender balance and increase recipient balance by the same amount.",
+    "expression": "balances[msg.sender] -= value; balances[to] += value",
+    "scope": "BasicToken.transfer"
+  },
+  {
+    "invariant": "Only the owner can change allowed or locked addresses.",
+    "expression": "msg.sender == owner",
+    "scope": "BasicToken.allowAddress, BasicToken.lockAddress, BasicToken.setLocked"
+  },
+  {
+    "invariant": "Locked users cannot transfer tokens unless explicitly allowed.",
+    "expression": "canTransfer(user) == ( (!locked || allowedAddresses[user]) && !lockedAddresses[user] )",
+    "scope": "BasicToken.canTransfer"
+  },
+  {
+    "invariant": "Transfer is not allowed to the zero address.",
+    "expression": "_to != address(0)",
+    "scope": "BasicToken.transfer, StandardToken.transferFrom"
+  },
+  {
+    "invariant": "Transfers must not exceed the sender’s balance.",
+    "expression": "balances[msg.sender] >= _value",
+    "scope": "BasicToken.transfer"
+  },
+  {
+    "invariant": "Approval sets or updates the spender's allowance correctly.",
+    "expression": "allowed[msg.sender][_spender] == _value",
+    "scope": "StandardToken.approve"
+  },
+  {
+    "invariant": "Transfers via transferFrom decrease allowances and update balances accordingly.",
+    "expression": "allowed[_from][msg.sender] >= _value && balances[_from] >= _value",
+    "scope": "StandardToken.transferFrom"
+  },
+  {
+    "invariant": "Burn reduces both balance and total supply by the burned amount.",
+    "expression": "balances[msg.sender] -= _value; totalSupply -= _value",
+    "scope": "BurnableToken.burn"
+  },
+  {
+    "invariant": "Owner can transfer ownership only to a valid (non-zero) address.",
+    "expression": "newOwner != address(0)",
+    "scope": "Ownable.transferOwnership"
+  },
+  {
+    "invariant": "Addition, subtraction, multiplication and division must not overflow or underflow.",
+    "expression": "SafeMath operations hold: add, sub, mul, div",
+    "scope": "SafeMath.*"
+  }
+]
+

@@ -1,0 +1,55 @@
+{
+  "invariants": [
+    {
+      "name": "totalSupply_includes_all_balances_except_zero",
+      "description": "The sum of all balances, excluding address(0), should equal totalSupply().",
+      "expression": "sum(balances[a] for all a != 0x0000000000000000000000000000000000000000) == totalSupply()"
+    },
+    {
+      "name": "initial_supply_assigned_to_owner",
+      "description": "After deployment, the total supply should be assigned to the original owner address.",
+      "expression": "balances[0x7D8d31B73Aebd9ceF3A66665Fb74518Efe3763E7] == 350000000000000000000000000"
+    },
+    {
+      "name": "no_overflow_in_transfer",
+      "description": "Transfers should not cause overflows in balances.",
+      "expression": "balances[to] + tokens >= balances[to]"
+    },
+    {
+      "name": "no_underflow_in_transfer",
+      "description": "Transfers should not cause underflows in sender balances.",
+      "expression": "balances[msg.sender] >= tokens"
+    },
+    {
+      "name": "no_underflow_in_transferFrom",
+      "description": "transferFrom should not cause underflows in balance or allowance.",
+      "expression": "balances[from] >= tokens && allowed[from][msg.sender] >= tokens"
+    },
+    {
+      "name": "transfer_zero_allowed",
+      "description": "Transfers of 0 tokens are allowed and must not affect balances.",
+      "expression": "transfer(to, 0) must not change balances[msg.sender] or balances[to]"
+    },
+    {
+      "name": "approve_sets_allowance_exactly",
+      "description": "Calling approve should overwrite the existing allowance with the specified value.",
+      "expression": "allowed[msg.sender][spender] == tokens after approve(spender, tokens)"
+    },
+    {
+      "name": "allowance_limits_transferFrom",
+      "description": "transferFrom must not allow spending more than approved allowance.",
+      "expression": "transferFrom can only succeed if allowed[from][msg.sender] >= tokens"
+    },
+    {
+      "name": "fallback_reverts",
+      "description": "Fallback function must revert to prevent ETH from being received.",
+      "expression": "fallback() always reverts"
+    },
+    {
+      "name": "safeMath_correctness",
+      "description": "All math operations using SafeMath must satisfy internal assertions.",
+      "expression": "safeAdd, safeSub, safeMul, safeDiv do not overflow or underflow under valid inputs"
+    }
+  ]
+}
+

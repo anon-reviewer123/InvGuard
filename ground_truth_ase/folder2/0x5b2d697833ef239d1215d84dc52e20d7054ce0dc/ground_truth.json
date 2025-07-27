@@ -1,0 +1,55 @@
+[
+  {
+    "invariant": "_totalSupply == sum(balances.values())",
+    "description": "Total token supply must always equal the sum of all account balances."
+  },
+  {
+    "invariant": "balances[address(0)] == 0",
+    "description": "The zero address should never hold any tokens; tokens sent here are considered burned."
+  },
+  {
+    "invariant": "msg.sender == minter => mint() is allowed",
+    "description": "Only the original minter (contract deployer) can mint new tokens."
+  },
+  {
+    "invariant": "transfer() and transferFrom() must not result in negative balances",
+    "description": "Users cannot send more tokens than they own."
+  },
+  {
+    "invariant": "transferFrom(): allowed[from][msg.sender] >= tokens",
+    "description": "Spender cannot transfer more tokens than they are allowed to by the owner."
+  },
+  {
+    "invariant": "burn(): balances[msg.sender] >= _value",
+    "description": "A user can only burn tokens they own."
+  },
+  {
+    "invariant": "totalSupply() == _totalSupply - balances[address(0)]",
+    "description": "ERC20-compliant totalSupply excludes any tokens at the zero address (burned)."
+  },
+  {
+    "invariant": "approve(): sets allowed[msg.sender][spender] == tokens",
+    "description": "The allowance must be correctly updated when a user calls approve."
+  },
+  {
+    "invariant": "transfer emits Transfer event with correct parameters",
+    "description": "Each successful transfer must emit a corresponding Transfer event."
+  },
+  {
+    "invariant": "approveAndCall() emits Approval and invokes spender.receiveApproval()",
+    "description": "This function must both set allowance and notify the spender contract."
+  },
+  {
+    "invariant": "Only owner can call transferAnyERC20Token()",
+    "description": "Prevents unauthorized recovery of other tokens from the contract."
+  },
+  {
+    "invariant": "fallback() reverts",
+    "description": "Contract must reject any incoming ETH transactions."
+  },
+  {
+    "invariant": "acceptOwnership() only callable by newOwner",
+    "description": "Ownership can only be accepted by the address designated as newOwner."
+  }
+]
+

@@ -1,0 +1,63 @@
+[
+  {
+    "invariant": "sum(balances) == totalSupply",
+    "description": "The sum of all token balances must equal the total token supply at all times.",
+    "location": "global",
+    "type": "accounting"
+  },
+  {
+    "invariant": "balanceOf(x) >= 0 for all x",
+    "description": "No account can have a negative balance.",
+    "location": "BasicToken.balanceOf",
+    "type": "safety"
+  },
+  {
+    "invariant": "allowed[x][y] >= 0 for all x, y",
+    "description": "Allowances must always be non-negative.",
+    "location": "StandardToken.allowance",
+    "type": "safety"
+  },
+  {
+    "invariant": "allowed[x][y] <= balanceOf(x)",
+    "description": "An allowance cannot exceed the balance of the owner.",
+    "location": "StandardToken.allowance",
+    "type": "authorization"
+  },
+  {
+    "invariant": "transfer(x, y, z) ==> balanceOf(x) decreases by z and balanceOf(y) increases by z",
+    "description": "Transfers must correctly update sender and recipient balances.",
+    "location": "BasicToken.transfer",
+    "type": "accounting"
+  },
+  {
+    "invariant": "transferFrom(a, b, c) ==> balanceOf(a) decreases by c, balanceOf(b) increases by c, and allowed[a][msg.sender] decreases by c",
+    "description": "Delegated transfers must update balances and allowances properly.",
+    "location": "StandardToken.transferFrom",
+    "type": "accounting"
+  },
+  {
+    "invariant": "approve(x, 0) || allowed[msg.sender][x] == 0 before approve(x, y)",
+    "description": "To prevent race conditions, approvals must either reset to 0 or be from a 0 state.",
+    "location": "StandardToken.approve",
+    "type": "security"
+  },
+  {
+    "invariant": "totalSupply >= 0",
+    "description": "Total supply must be non-negative.",
+    "location": "ERC20Basic.totalSupply",
+    "type": "safety"
+  },
+  {
+    "invariant": "Transfer emits exactly one event with correct parameters per transfer",
+    "description": "Each token transfer must emit a Transfer event with the expected parameters.",
+    "location": "BasicToken.transfer, StandardToken.transferFrom",
+    "type": "event"
+  },
+  {
+    "invariant": "Approval emits exactly one event with correct parameters per approval",
+    "description": "Each approval must emit an Approval event with the expected parameters.",
+    "location": "StandardToken.approve",
+    "type": "event"
+  }
+]
+

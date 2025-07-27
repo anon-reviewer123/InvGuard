@@ -1,0 +1,59 @@
+[
+  {
+    "invariant": "_totalSupply == sum(balances) + balances[address(0)]",
+    "description": "Total supply equals the sum of all balances including the zero address (burned tokens)."
+  },
+  {
+    "invariant": "balances[owner] + sum(balances[others]) + balances[address(0)] == 10000000000 * 10**uint(decimals)",
+    "description": "Total initial supply is preserved (except burned tokens go to address(0))."
+  },
+  {
+    "invariant": "_stopTrade == false || (transfer, transferFrom, approve, allowance all revert)",
+    "description": "When trading is stopped, token operations like transfer, approve, and allowance must revert."
+  },
+  {
+    "invariant": "forall x in balances: balances[x] >= 0",
+    "description": "No balance should ever be negative due to SafeMath."
+  },
+  {
+    "invariant": "forall x in allowed: forall y in allowed[x]: allowed[x][y] >= 0",
+    "description": "No allowance should ever be negative."
+  },
+  {
+    "invariant": "transfer emits Transfer(msg.sender, to, tokens) if successful",
+    "description": "Each successful transfer must emit a Transfer event."
+  },
+  {
+    "invariant": "transferFrom emits Transfer(from, to, tokens) if successful",
+    "description": "Each successful transferFrom must emit a Transfer event."
+  },
+  {
+    "invariant": "approve emits Approval(msg.sender, spender, tokens)",
+    "description": "Each successful approve must emit an Approval event."
+  },
+  {
+    "invariant": "burn only reduces _totalSupply and balances[msg.sender], not increases",
+    "description": "Burning can never increase balances or total supply."
+  },
+  {
+    "invariant": "balances[address(0)] increases only due to burn()",
+    "description": "Only burn operations should send tokens to the zero address."
+  },
+  {
+    "invariant": "approveAndCall emits Approval and calls receiveApproval",
+    "description": "approveAndCall must emit the Approval event and invoke the recipient's receiveApproval method."
+  },
+  {
+    "invariant": "_stopTrade only toggleable by owner",
+    "description": "Only the owner is allowed to call startTrade and stopTrade."
+  },
+  {
+    "invariant": "transferAnyERC20Token can only be called by owner",
+    "description": "Only owner can recover other ERC20 tokens sent to the contract."
+  },
+  {
+    "invariant": "fallback function always reverts",
+    "description": "ETH cannot be sent to the contract; fallback will always revert."
+  }
+]
+

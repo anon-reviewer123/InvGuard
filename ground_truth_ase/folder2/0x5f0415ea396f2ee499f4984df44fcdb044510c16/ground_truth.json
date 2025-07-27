@@ -1,0 +1,71 @@
+{
+  "ACCAToken": [
+    {
+      "condition": "true",
+      "invariant": "totalSupply == sum(balances)"
+    },
+    {
+      "condition": "msg.sender != address(this)",
+      "invariant": "transfer to contract's own address is not allowed"
+    },
+    {
+      "condition": "lockedWalletInfo[msg.sender].timeLockUpEnd > now && lockedWalletInfo[msg.sender].sendLock",
+      "invariant": "transfer is rejected and balance remains unchanged"
+    },
+    {
+      "condition": "lockedWalletInfo[_to].timeLockUpEnd > now && lockedWalletInfo[_to].receiveLock",
+      "invariant": "transfer is rejected and balance remains unchanged"
+    },
+    {
+      "condition": "burn()",
+      "invariant": "totalSupply decreases by _value; balances[msg.sender] decreases by _value"
+    },
+    {
+      "condition": "transfer is successful",
+      "invariant": "balances[msg.sender] -= _value; balances[_to] += _value"
+    },
+    {
+      "condition": "registerManoContract()",
+      "invariant": "manoContracts[addr] == registered"
+    },
+    {
+      "condition": "transferAndLockUntil or transferAndLockForever",
+      "invariant": "lockedWalletInfo[_to].sendLock == true && receiveLock == true"
+    }
+  ],
+  "ACCACrowdSale": [
+    {
+      "condition": "true",
+      "invariant": "fundingGoal >= fundingGoalCurrent"
+    },
+    {
+      "condition": "buyToken()",
+      "invariant": "saleStatus.totalSoldApis + reservedApis <= fundingGoalCurrent && fundingGoal"
+    },
+    {
+      "condition": "claimApis() or claimMyApis()",
+      "invariant": "fundersProperty[msg.sender].reservedFunds > 0 && isInWhiteList(msg.sender) == true"
+    },
+    {
+      "condition": "withdrawal()",
+      "invariant": "tokenReward.balanceOf(funder) increases by reservedApis"
+    },
+    {
+      "condition": "withdrawal()",
+      "invariant": "fundersProperty[addr].reservedFunds == 0 && reservedApis == 0 after execution"
+    },
+    {
+      "condition": "refundByOwner()",
+      "invariant": "funder receives reservedFunds in ETH, reservedApis and reservedFunds are zeroed"
+    },
+    {
+      "condition": "withdrawalFunds(remainRefundable=true)",
+      "invariant": "only balance - totalReservedFunds is withdrawn"
+    },
+    {
+      "condition": "setCurrentFundingGoal()",
+      "invariant": "new fundingGoalCurrent >= saleStatus.totalSoldApis"
+    }
+  ]
+}
+

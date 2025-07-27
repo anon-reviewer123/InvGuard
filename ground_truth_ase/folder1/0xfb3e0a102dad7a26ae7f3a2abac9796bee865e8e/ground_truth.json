@@ -1,0 +1,55 @@
+[
+  {
+    "invariant": "totalSupply == sum(balances)",
+    "description": "The total supply must equal the sum of all balances (except when `mint` is called without adjusting `totalSupply`)."
+  },
+  {
+    "invariant": "balances[owner] >= 0",
+    "description": "The owner's balance must never be negative."
+  },
+  {
+    "invariant": "forall(addr in balances): balances[addr] >= 0",
+    "description": "No address can have a negative balance."
+  },
+  {
+    "invariant": "forall((owner, spender) in allowed): allowed[owner][spender] >= 0",
+    "description": "Allowances must never be negative."
+  },
+  {
+    "invariant": "transfer(_, to, val) ⇒ to != 0x0",
+    "description": "Cannot transfer tokens to the zero address."
+  },
+  {
+    "invariant": "transferFrom(from, to, val) ⇒ allow[from] == true",
+    "description": "Transfers from other accounts are only allowed if `allow[from] == true`."
+  },
+  {
+    "invariant": "transferFrom(_, to, val) ⇒ to != 0x0",
+    "description": "Cannot transferFrom to the zero address."
+  },
+  {
+    "invariant": "transferFrom(from, _, val) ⇒ val <= balances[from]",
+    "description": "Cannot transfer more than the balance of `from`."
+  },
+  {
+    "invariant": "transferFrom(from, _, val) ⇒ val <= allowed[from][msg.sender]",
+    "description": "Cannot transfer more than the approved allowance."
+  },
+  {
+    "invariant": "approve(spender, val) ⇒ allowed[msg.sender][spender] == val",
+    "description": "Approving sets the spender’s allowance to the exact value."
+  },
+  {
+    "invariant": "mint(miner, val) ⇒ balances[miner] == val",
+    "description": "Minting sets the balance of the miner to the specified value (overwrites existing balance)."
+  },
+  {
+    "invariant": "onlyOwner ⇒ msg.sender == 0x3B0Da2030146702b7B7B321739AC3bDd2345C852",
+    "description": "Only the hardcoded address is allowed to execute functions marked with `onlyOwner`."
+  },
+  {
+    "invariant": "showuint160(addr) == uint160(addr)",
+    "description": "The `showuint160` function returns the uint160 representation of an address."
+  }
+]
+

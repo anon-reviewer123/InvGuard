@@ -1,0 +1,67 @@
+[
+  {
+    "invariant": "totalSupply == _totalSupply - balances[0x0000000000000000000000000000000000000000]",
+    "description": "The total supply excludes tokens held by the zero address (burned tokens)."
+  },
+  {
+    "invariant": "∀ address a: balances[a] >= 0",
+    "description": "No account should have a negative balance (by definition of uint)."
+  },
+  {
+    "invariant": "∀ address a, b: allowed[a][b] >= 0",
+    "description": "Allowance mappings should always be non-negative."
+  },
+  {
+    "invariant": "∀ transfer: balances[sender] >= tokens",
+    "description": "Sender must have enough tokens before a transfer is allowed."
+  },
+  {
+    "invariant": "∀ transferFrom: balances[from] >= tokens AND allowed[from][msg.sender] >= tokens",
+    "description": "The `from` address must have enough tokens and the caller must be allowed to transfer them."
+  },
+  {
+    "invariant": "sum(balances) <= _totalSupply",
+    "description": "The sum of all balances should not exceed the declared total supply."
+  },
+  {
+    "invariant": "∀ approve: allowed[msg.sender][spender] == tokens",
+    "description": "After approve is called, the allowed amount must equal the input."
+  },
+  {
+    "invariant": "owner != 0x0",
+    "description": "The contract must always have a valid owner."
+  },
+  {
+    "invariant": "msg.sender == owner before calling transferOwnership",
+    "description": "Only the current owner can initiate ownership transfer."
+  },
+  {
+    "invariant": "msg.sender == newOwner before calling acceptOwnership",
+    "description": "Only the proposed new owner can accept ownership."
+  },
+  {
+    "invariant": "fallback function always reverts",
+    "description": "No ether can be sent to this contract; all calls without data will fail."
+  },
+  {
+    "invariant": "transfer emits Transfer event with correct args",
+    "description": "A successful token transfer must emit the correct Transfer event."
+  },
+  {
+    "invariant": "approve emits Approval event with correct args",
+    "description": "A successful approve must emit the correct Approval event."
+  },
+  {
+    "invariant": "transferFrom emits Transfer event with correct args",
+    "description": "A successful delegated transfer must emit the Transfer event."
+  },
+  {
+    "invariant": "approveAndCall must call receiveApproval on the spender",
+    "description": "The spender contract must be notified of approval via the fallback call."
+  },
+  {
+    "invariant": "transferAnyERC20Token callable only by owner",
+    "description": "Only the contract owner can recover foreign ERC20 tokens."
+  }
+]
+

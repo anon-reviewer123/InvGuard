@@ -1,0 +1,55 @@
+[
+  {
+    "invariant": "_totalSupply == 10000000000000000000000000000",
+    "description": "The total supply of the token is fixed and initialized in the constructor."
+  },
+  {
+    "invariant": "balances[0xACD7Fae9C91B43858677CD63b64fEd72158e05fD] + sum(balances[a] for all a != address(0)) == _totalSupply",
+    "description": "The sum of all user balances (excluding burned tokens sent to address(0)) equals the total supply."
+  },
+  {
+    "invariant": "balances[address(0)] >= 0",
+    "description": "Tokens sent to the zero address (burned) are tracked and never negative."
+  },
+  {
+    "invariant": "forall a: balances[a] >= 0",
+    "description": "No account should ever have a negative balance due to SafeMath."
+  },
+  {
+    "invariant": "forall (owner, spender): allowed[owner][spender] >= 0",
+    "description": "Allowances must always be non-negative."
+  },
+  {
+    "invariant": "balanceOf(a) == balances[a]",
+    "description": "Public getter for balance must match internal balances mapping."
+  },
+  {
+    "invariant": "totalSupply() == _totalSupply - balances[address(0)]",
+    "description": "totalSupply function reports the effective circulating supply (burned tokens excluded)."
+  },
+  {
+    "invariant": "transfer(to, 0) does not affect balances",
+    "description": "Zero value transfers are allowed and should not change balances."
+  },
+  {
+    "invariant": "approve(spender, tokens) sets allowed[msg.sender][spender] == tokens",
+    "description": "Allowance is set to the exact value during approval."
+  },
+  {
+    "invariant": "transferFrom(from, to, tokens) => allowed[from][msg.sender] decreases by tokens",
+    "description": "Calling transferFrom reduces the caller's allowance."
+  },
+  {
+    "invariant": "transferFrom(from, to, tokens) => balances[from] decreases and balances[to] increases by tokens",
+    "description": "Tokens are correctly moved during transferFrom calls."
+  },
+  {
+    "invariant": "approveAndCall sets allowed[msg.sender][spender] == tokens and calls receiveApproval",
+    "description": "approveAndCall not only approves but also invokes the callback function on the spender contract."
+  },
+  {
+    "invariant": "fallback function always reverts",
+    "description": "The contract should never accept ETH transfers."
+  }
+]
+

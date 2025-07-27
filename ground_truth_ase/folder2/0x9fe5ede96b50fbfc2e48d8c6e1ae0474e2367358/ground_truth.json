@@ -1,0 +1,45 @@
+{
+  "invariants": [
+    {
+      "description": "Sum of all balances must equal total supply",
+      "expression": "sum(balances) == totalSupply"
+    },
+    {
+      "description": "No account can have a negative balance",
+      "expression": "forall addr in addresses: balances[addr] >= 0"
+    },
+    {
+      "description": "No allowance can be negative",
+      "expression": "forall owner in addresses, spender in addresses: allowed[owner][spender] >= 0"
+    },
+    {
+      "description": "Transfer only allowed if sender has sufficient balance",
+      "expression": "transfer(sender, to, value) requires balances[sender] >= value"
+    },
+    {
+      "description": "transferFrom only allowed if balance and allowance are sufficient",
+      "expression": "transferFrom(from, to, value) requires balances[from] >= value && allowed[from][caller] >= value"
+    },
+    {
+      "description": "Post-transfer, tokens are conserved",
+      "expression": "after transfer or transferFrom: sum(balances) == previous totalSupply"
+    },
+    {
+      "description": "Approvals do not modify balances",
+      "expression": "approve(spender, value): balances[owner] unchanged"
+    },
+    {
+      "description": "Allowance only decreases if it is not unlimited (MAX_UINT256)",
+      "expression": "if allowed[from][caller] < MAX_UINT256: allowed[from][caller] -= value after transferFrom"
+    },
+    {
+      "description": "Events are correctly emitted for state changes",
+      "expression": "on transfer: emit Transfer(from, to, value); on approve: emit Approval(owner, spender, value)"
+    },
+    {
+      "description": "Constructor correctly initializes state",
+      "expression": "on constructor: balances[creator] == totalSupply && name == _tokenName && symbol == _tokenSymbol && decimals == _decimalUnits"
+    }
+  ]
+}
+
