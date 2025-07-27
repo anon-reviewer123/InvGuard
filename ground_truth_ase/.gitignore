@@ -101,3 +101,4 @@ Experiment/
 !Experiment/*/*/*.inv 
 !Experiment/*/*/*.sol
 !Experiment/*/*/*.abi 
+!ground_truth_ase/**/*.json
