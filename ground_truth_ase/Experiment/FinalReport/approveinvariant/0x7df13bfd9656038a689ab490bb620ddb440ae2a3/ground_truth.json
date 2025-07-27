@@ -1,0 +1,43 @@
+{
+  "ETHER3XBULL.sol": {
+    "vulnerabilities": ["Access Control", "Overflow/Underflow", "Authorization", "ERC20 Compliance"],
+    "invariants": [
+      {
+        "description": "Only the owner should be able to call functions marked with `onlyOwner` modifier.",
+        "formal": "forall f in {transferOwnership, addAllow, mint}: require(msg.sender == owner)",
+        "category": "Access Control"
+      },
+      {
+        "description": "Transfer function should only succeed if sender has sufficient balance.",
+        "formal": "balances[msg.sender] >= _value => transfer(_to, _value) executes",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "All balance and allowance modifications must use SafeMath to prevent overflows or underflows.",
+        "formal": "forall balance/allowance updates: use SafeMath.{add,sub}",
+        "category": "Overflow/Underflow"
+      },
+      {
+        "description": "Only addresses explicitly allowed by the `allow` mapping should be able to perform `transferFrom`.",
+        "formal": "allow[_from] == true => transferFrom(_from, _to, _value) executes",
+        "category": "Authorization"
+      },
+      {
+        "description": "The `mint` function must only be callable by the contract owner.",
+        "formal": "require(msg.sender == owner) => mint(miner, _value) executes",
+        "category": "Access Control"
+      },
+      {
+        "description": "Transfers must not be allowed to the zero address.",
+        "formal": "_to != 0x0 => transfer(_to, _value) and transferFrom(...) execute",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Total supply consistency should be preserved unless minting explicitly occurs.",
+        "formal": "sum(balances) <= totalSupply",
+        "category": "ERC20 Compliance"
+      }
+    ]
+  }
+}
+

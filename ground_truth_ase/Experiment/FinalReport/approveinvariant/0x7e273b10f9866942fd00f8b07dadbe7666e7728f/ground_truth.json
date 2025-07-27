@@ -1,0 +1,54 @@
+{
+  "getrichquick.sol": {
+    "contract_name": "getrichquick",
+    "vulnerabilities": ["Integer Overflow/Underflow", "Access Control", "ERC20 Misuse", "Allowance Race"],
+    "invariants": [
+      {
+        "description": "Token balances must never go negative (underflow prevention)",
+        "formal": "balances[msg.sender] >= _value before sub()",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "Total supply must equal the sum of all user balances",
+        "formal": "sum(balances[addr] for all addr) == totalSupply",
+        "category": "Invariant Consistency"
+      },
+      {
+        "description": "Cannot transfer tokens to the zero address",
+        "formal": "_to != address(0)",
+        "category": "Access Control / Safety"
+      },
+      {
+        "description": "transferFrom() should only succeed if spender has sufficient allowance",
+        "formal": "_value <= allowed[_from][msg.sender]",
+        "category": "Access Control"
+      },
+      {
+        "description": "approve() must set allowance to 0 before resetting it to a new value (to prevent race condition)",
+        "formal": "(_value == 0 || allowed[msg.sender][_spender] == 0)",
+        "category": "ERC20 Best Practice / Race Condition Mitigation"
+      },
+      {
+        "description": "All arithmetic must use SafeMath to prevent overflow/underflow",
+        "formal": "All additions/subtractions use SafeMath.{add,sub}",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "Initial supply must be assigned entirely to the contract creator",
+        "formal": "balances[msg.sender] == INITIAL_SUPPLY at constructor",
+        "category": "Initialization Integrity"
+      },
+      {
+        "description": "Total supply must be constant post-construction",
+        "formal": "totalSupply is immutable after constructor",
+        "category": "Supply Invariance"
+      },
+      {
+        "description": "transfer and transferFrom must emit Transfer event",
+        "formal": "emit Transfer(...) must occur on token movement",
+        "category": "Event Consistency"
+      }
+    ]
+  }
+}
+

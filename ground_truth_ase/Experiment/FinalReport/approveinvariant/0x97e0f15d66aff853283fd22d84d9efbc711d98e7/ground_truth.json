@@ -1,0 +1,48 @@
+{
+  "Nnbtoken.sol": {
+    "vulnerabilities": ["Arithmetic", "Access Control", "ERC20 Logic"],
+    "invariants": [
+      {
+        "description": "The sum of all account balances must not exceed totalSupply",
+        "formal": "sum(balances[addr]) <= totalSupply",
+        "category": "ERC20 Logic"
+      },
+      {
+        "description": "Balance of sender must not go negative after transfer",
+        "formal": "balances[msg.sender] >= _value",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Overflow must not occur when adding to recipient balance",
+        "formal": "balances[_to] + _value > balances[_to]",
+        "category": "Arithmetic"
+      },
+      {
+        "description": "Transfers must not be allowed to the zero address",
+        "formal": "_to != 0x0",
+        "category": "ERC20 Logic"
+      },
+      {
+        "description": "Allowance must not be overspent in transferFrom",
+        "formal": "allowed[_from][msg.sender] >= _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "transferFrom must update both balances and allowance consistently",
+        "formal": "allowed[_from][msg.sender] -= _value; balances[_from] -= _value; balances[_to] += _value",
+        "category": "ERC20 Logic"
+      },
+      {
+        "description": "approve must correctly set the spender’s allowance",
+        "formal": "allowed[msg.sender][_spender] == _value",
+        "category": "ERC20 Logic"
+      },
+      {
+        "description": "Events must be emitted for transfer and approval actions",
+        "formal": "Transfer(...) and Approval(...) must be emitted on respective actions",
+        "category": "ERC20 Logic"
+      }
+    ]
+  }
+}
+

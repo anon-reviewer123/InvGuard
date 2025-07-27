@@ -1,0 +1,48 @@
+[
+  {
+    "invariant": "sum(balanceOf) + totalSupply_burned == initialTotalSupply",
+    "description": "Total supply equals the sum of all balances plus tokens that have been burned."
+  },
+  {
+    "invariant": "balanceOf[msg.sender] >= 0",
+    "description": "No address can have a negative balance."
+  },
+  {
+    "invariant": "allowance[A][B] >= 0",
+    "description": "Allowances must be non-negative."
+  },
+  {
+    "invariant": "balanceOf[_from] + balanceOf[_to] == previousBalances",
+    "scope": "_transfer",
+    "description": "Transfer preserves the sum of balances for the sender and receiver."
+  },
+  {
+    "invariant": "_to != 0x0",
+    "scope": "_transfer",
+    "description": "Cannot transfer tokens to the zero address."
+  },
+  {
+    "invariant": "_value <= allowance[_from][msg.sender]",
+    "scope": "transferFrom",
+    "description": "Transferred value must not exceed approved allowance."
+  },
+  {
+    "invariant": "_value <= balanceOf[msg.sender]",
+    "scope": "burn",
+    "description": "Cannot burn more than the caller's balance."
+  },
+  {
+    "invariant": "_value <= balanceOf[_from] && _value <= allowance[_from][msg.sender]",
+    "scope": "burnFrom",
+    "description": "Cannot burn more than allowed or more than balance in burnFrom."
+  },
+  {
+    "invariant": "totalSupply >= 0",
+    "description": "Total supply cannot become negative."
+  },
+  {
+    "invariant": "decimals == 18",
+    "description": "The number of decimals is fixed at 18."
+  }
+]
+

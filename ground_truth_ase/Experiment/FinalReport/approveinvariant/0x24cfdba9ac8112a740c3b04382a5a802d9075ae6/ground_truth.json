@@ -1,0 +1,62 @@
+{
+  "ZlotowkaCoin.sol": {
+    "vulnerabilities": [
+      "Arithmetic Overflow/Underflow",
+      "Access Control",
+      "ERC20 Compliance"
+    ],
+    "invariants": [
+      {
+        "description": "Total supply must equal the sum of all balances, excluding burned tokens at address(0).",
+        "formal": "totalSupply == sum(balances) - balances[address(0)]",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Sender’s balance must not decrease below zero after transfer.",
+        "formal": "balances[msg.sender] - tokens >= 0",
+        "category": "Arithmetic Overflow/Underflow"
+      },
+      {
+        "description": "Receiver’s balance must increase correctly after transfer.",
+        "formal": "balances[to] == balances[to]_prev + tokens",
+        "category": "Arithmetic Overflow/Underflow"
+      },
+      {
+        "description": "Sender must have sufficient balance for transfer.",
+        "formal": "balances[msg.sender] >= tokens",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Spender must not exceed approved allowance.",
+        "formal": "allowed[from][msg.sender] >= tokens",
+        "category": "Access Control"
+      },
+      {
+        "description": "Only the owner can execute transferAnyERC20Token().",
+        "formal": "msg.sender == owner",
+        "category": "Access Control"
+      },
+      {
+        "description": "Fallback function must reject all ETH transfers.",
+        "formal": "receive() == revert()",
+        "category": "Access Control"
+      },
+      {
+        "description": "New owner can only accept ownership if previously designated.",
+        "formal": "msg.sender == newOwner",
+        "category": "Access Control"
+      },
+      {
+        "description": "Allowance updates in approve() must overwrite previous value without underflow.",
+        "formal": "allowed[msg.sender][spender] = tokens",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "OnlyOwner modifier must enforce exclusive access to privileged functions.",
+        "formal": "msg.sender == owner for onlyOwner functions",
+        "category": "Access Control"
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,58 @@
+{
+  "Token.sol": {
+    "vulnerabilities": [
+      "Overflow/Underflow",
+      "Access Control",
+      "Approval Misuse",
+      "Fallback Revert"
+    ],
+    "invariants": [
+      {
+        "description": "Sender must have sufficient balance to transfer tokens",
+        "formal": "balances[msg.sender] >= _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "Transferred value must be greater than zero",
+        "formal": "_value > 0",
+        "category": "Input Validation"
+      },
+      {
+        "description": "Total balance consistency must hold after transfer",
+        "formal": "balances[msg.sender]_before + balances[_to]_before == balances[msg.sender]_after + balances[_to]_after",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "Sender must be allowed to transfer on behalf of _from in transferFrom",
+        "formal": "allowed[_from][msg.sender] >= _value",
+        "category": "Access Control"
+      },
+      {
+        "description": "transferFrom must reduce allowance appropriately",
+        "formal": "allowed[_from][msg.sender]_after == allowed[_from][msg.sender]_before - _value",
+        "category": "State Consistency"
+      },
+      {
+        "description": "Approval must correctly set allowance mapping",
+        "formal": "allowed[msg.sender][_spender] == _value",
+        "category": "Approval Correctness"
+      },
+      {
+        "description": "Total token supply should equal sum of all balances",
+        "formal": "sum(balances[a]) == totalSupply for all a in addresses",
+        "category": "Supply Integrity"
+      },
+      {
+        "description": "Fallback function must always revert when Ether is sent",
+        "formal": "fallback() always throws",
+        "category": "Ether Safety"
+      },
+      {
+        "description": "approveAndCall must throw if external call fails",
+        "formal": "!_spender.call(...) → throw",
+        "category": "External Call Handling"
+      }
+    ]
+  }
+}
+

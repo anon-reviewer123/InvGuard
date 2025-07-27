@@ -1,0 +1,47 @@
+[
+  {
+    "invariant": "sum_of_all_balances == total_supply",
+    "description": "The sum of all user balances (excluding address(0)) must always equal the total token supply."
+  },
+  {
+    "invariant": "balance[msg.sender] >= 0",
+    "description": "No address should ever have a negative balance (though Solidity unsigned integers prevent this)."
+  },
+  {
+    "invariant": "allowed[from][spender] >= 0",
+    "description": "The allowance mapping should never contain a negative value."
+  },
+  {
+    "invariant": "totalSupply() == _totalSupply - balances[address(0)]",
+    "description": "Public totalSupply should always exclude tokens sent to address(0), which are effectively burned."
+  },
+  {
+    "invariant": "transfer emits Transfer(from, to, value)",
+    "description": "Every successful transfer must emit a Transfer event with accurate from/to/value."
+  },
+  {
+    "invariant": "approve emits Approval(owner, spender, value)",
+    "description": "Every approve call must emit an Approval event matching the input values."
+  },
+  {
+    "invariant": "transferFrom respects allowance",
+    "description": "transferFrom must not allow transferring more than allowed[from][msg.sender]."
+  },
+  {
+    "invariant": "transferFrom respects balance",
+    "description": "transferFrom must not allow transferring more than balances[from]."
+  },
+  {
+    "invariant": "initial_owner_balance == _totalSupply",
+    "description": "Upon deployment, the contract creator (or specified owner) should receive the full initial supply."
+  },
+  {
+    "invariant": "approveAndCall calls receiveApproval with exact args",
+    "description": "approveAndCall must call the spender's `receiveApproval` with msg.sender, tokens, this, and data."
+  },
+  {
+    "invariant": "contract cannot receive ether",
+    "description": "Fallback function should always revert any ETH sent to this contract."
+  }
+]
+

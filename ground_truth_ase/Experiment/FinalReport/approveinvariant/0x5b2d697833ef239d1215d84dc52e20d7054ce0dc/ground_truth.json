@@ -1,0 +1,54 @@
+{
+  "JGOLDToken.sol": {
+    "contract_name": "JGOLDToken",
+    "vulnerabilities": ["Access Control", "Arithmetic Safety", "Supply Invariant", "ERC20 Compliance"],
+    "invariants": [
+      {
+        "description": "Only the minter can mint new tokens",
+        "formal": "msg.sender == minter → allow(mint)",
+        "category": "Access Control"
+      },
+      {
+        "description": "Only the owner can transfer accidentally sent ERC20 tokens",
+        "formal": "msg.sender == owner → allow(transferAnyERC20Token)",
+        "category": "Access Control"
+      },
+      {
+        "description": "Cannot burn more tokens than the sender’s balance",
+        "formal": "balances[msg.sender] >= _value → allow(burn)",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "Transfer only if sender has sufficient balance",
+        "formal": "balances[msg.sender] >= tokens → allow(transfer)",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "transferFrom only allowed if sender has sufficient allowance and balance",
+        "formal": "balances[from] >= tokens ∧ allowed[from][msg.sender] >= tokens → allow(transferFrom)",
+        "category": "Arithmetic Safety"
+      },
+      {
+        "description": "Total supply should equal the sum of all balances (excluding zero address)",
+        "formal": "totalSupply() = Σ balances[a] ∀ a ≠ address(0)",
+        "category": "Supply Invariant"
+      },
+      {
+        "description": "Token transfers must emit a Transfer event",
+        "formal": "on transfer or transferFrom → emit Transfer",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Approvals must emit an Approval event",
+        "formal": "on approve or approveAndCall → emit Approval",
+        "category": "ERC20 Compliance"
+      },
+      {
+        "description": "Fallback function must reject all ETH transfers",
+        "formal": "receive() → revert()",
+        "category": "Access Control"
+      }
+    ]
+  }
+}
+

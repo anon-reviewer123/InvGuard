@@ -1,0 +1,59 @@
+[
+  {
+    "invariant": "Total supply remains constant after deployment",
+    "expression": "_totalSupply == 10000000"
+  },
+  {
+    "invariant": "Sum of all user balances + zero address balance equals total supply",
+    "expression": "sum(balances) + balances[address(0)] == _totalSupply"
+  },
+  {
+    "invariant": "Zero address should not hold tokens from normal transfers",
+    "expression": "balances[address(0)] == 0"
+  },
+  {
+    "invariant": "No account can transfer more tokens than they hold",
+    "expression": "tokens <= balances[msg.sender] for transfer()"
+  },
+  {
+    "invariant": "No account can spend more than allowed via transferFrom",
+    "expression": "tokens <= allowed[from][msg.sender]"
+  },
+  {
+    "invariant": "Allowance can be updated correctly",
+    "expression": "allowed[tokenOwner][spender] == tokens after approve"
+  },
+  {
+    "invariant": "Receiver's balance increases exactly by transferred amount",
+    "expression": "balances[to] += tokens"
+  },
+  {
+    "invariant": "Sender's balance decreases exactly by transferred amount",
+    "expression": "balances[msg.sender] -= tokens"
+  },
+  {
+    "invariant": "Only owner can call transferAnyERC20Token",
+    "expression": "msg.sender == owner for transferAnyERC20Token"
+  },
+  {
+    "invariant": "Ownership transfer requires acceptance by newOwner",
+    "expression": "newOwner != address(0) and msg.sender == newOwner before ownership change"
+  },
+  {
+    "invariant": "Fallback function always reverts",
+    "expression": "fallback() => revert()"
+  },
+  {
+    "invariant": "approveAndCall sets allowance and invokes receiveApproval",
+    "expression": "allowed[msg.sender][spender] == tokens and receiveApproval called"
+  },
+  {
+    "invariant": "Decimals are hardcoded to 0",
+    "expression": "decimals == 0"
+  },
+  {
+    "invariant": "Initial supply assigned to deployer's specified address",
+    "expression": "balances[0x0ecAc3624a5D274f6098dfA086DA931A3BC85dDd] == _totalSupply"
+  }
+]
+
