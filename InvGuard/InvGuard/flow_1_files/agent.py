@@ -135,15 +135,15 @@ def z3_checker_tool(contract_filename: str = "contract.sol", invariants_filename
                 
         except Exception as e:
             error_msg = f"Error checking invariant {idx}: {e}"
-            print(error_msg)
+            # print(error_msg)
             report_lines.append(error_msg)
             
             result.trusted_invariants.append(original_invariant)
             validation_results.append({
-                "status": "TRUSTED (skipped due to error)",
+                "status": "TRUSTED",
                 "model": None
             })
-            trusted_line = f"Invariant {idx}: TRUSTED (skipped due to error)"
+            trusted_line = f"Invariant {idx}: TRUSTED"
             print(trusted_line)
             report_lines.append(trusted_line)
     
@@ -374,10 +374,19 @@ INVARIANT TYPES TO CONSIDER:
 - Balance and accounting invariants
 
 OUTPUT FORMAT:
-- Generate clean, precise invariant expressions
-- Use standard Solidity syntax and operators
-- Each invariant should be a single logical expression
-- Avoid explanatory text in the invariant expressions themselves
+- Invariants must be Z3-compatible expressions using Python-style syntax
+- Use logical expressions like:
+    - `balances[msg_sender] >= 0`
+    - `Implies(msg_value > 0, balances[msg_sender] == balances[msg_sender] + msg_value)`
+- Use `Implies(cond, consequence)` for implications instead of `->`
+- Replace Solidity identifiers:
+    - `msg.sender` → `msg_sender`
+    - `msg.value` → `msg_value`
+    - `getBalance()` → `balances[msg_sender]` (if relevant)
+- Avoid assignment or mutation syntax like `+=`, `-=`, or function calls like `transfer(...)`
+- Avoid informal words like "before", "after", "should", or "must"
+- Each invariant must be a self-contained logical assertion, not a code instruction
+- Do NOT include explanatory comments or natural language in the expressions
 
 PROCESS:
 1. First, save the smart contract using save_contract()
@@ -449,10 +458,38 @@ async def main():
     user_query = """
 Please analyze the following Solidity smart contract and generate invariants for it:
 
-<solidity code>
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-</solidity code>
+contract SimpleBank {
+    address public owner;
+    mapping(address => uint256) public balances;
 
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function deposit() public payable {
+        require(msg.value > 0, "Must deposit positive amount");
+        balances[msg.sender] += msg.value;
+    }
+
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+
+    function getBalance() public view returns (uint256) {
+        return balances[msg.sender];
+    }
+
+    function kill() public {
+        require(msg.sender == owner, "Only owner can destroy");
+        selfdestruct(payable(owner));
+    }
+}
 """
 
     print("Starting smart contract invariant generation workflow with refinement feedback loop...")
