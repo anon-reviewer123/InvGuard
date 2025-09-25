@@ -79,6 +79,7 @@ flow_1_files/
 flow_2_files/
 ├── agent.py          # Main agent for exploit analysis
 ```
+Fine-tuning dataset: available in the repository root at ft/
 
 ## Configuration
 
@@ -88,3 +89,4 @@ The following configurations need to be set in both flow's agent.py files:
 - `BASE_EXECUTION_DIR`: Base directory for execution
 - `CORRECT_INVARIANTS_DIR`: Directory for storing verified invariants (Flow 1 only)
 - `MAX_REFINEMENT_ITERATIONS`: Maximum number of refinement iterations (Flow 1 only)
+
