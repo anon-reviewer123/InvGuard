@@ -1,0 +1,5 @@
+balances[msg.sender] >= 0
+msg.value > 0 => balances[msg.sender] += msg.value
+balances[msg.sender] >= amount => balances[msg.sender] -= amount
+balances[msg.sender] >= amount => msg.sender.balance += amount
+msg.sender == owner => selfdestruct(payable(owner))

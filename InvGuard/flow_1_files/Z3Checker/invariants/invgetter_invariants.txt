@@ -1,0 +1,16 @@
+this.totalSupply >= 0
+this.balances[msg.sender] >= 0
+this.totalSupply == orig(this.totalSupply)
+orig(this.balances[msg.sender]) >= amount
+this.balances[msg.sender] + this.balances[to] == orig(this.balances[msg.sender]) + orig(this.balances[to])
+to != msg.sender -> this.balances[msg.sender] == orig(this.balances[msg.sender]) - amount
+to != msg.sender -> this.balances[to] == orig(this.balances[to]) + amount
+to == msg.sender -> this.balances[msg.sender] == orig(this.balances[msg.sender])
+this.totalSupply == orig(this.totalSupply) + amount
+this.balances[msg.sender] == orig(this.balances[msg.sender]) + amount
+orig(this.balances[msg.sender]) >= amount
+this.totalSupply == orig(this.totalSupply) - amount
+this.balances[msg.sender] == orig(this.balances[msg.sender]) - amount
+amount == 0 -> this.totalSupply == orig(this.totalSupply)
+amount == 0 -> this.balances[msg.sender] == orig(this.balances[msg.sender])
+to == msg.sender -> this.totalSupply == orig(this.totalSupply)

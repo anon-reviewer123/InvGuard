@@ -1,0 +1,3 @@
+z3-solver
+solidity-parser
+openai-agents
